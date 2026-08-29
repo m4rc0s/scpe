@@ -44,11 +44,17 @@ O movimento de **Spec-Driven Development (SDD)** e **Spec-First** integra a vang
 
 ---
 
+**Visão Estratégica:** O código-fonte, que historicamente consumia grande parte do esforço de construção de um time, passa a ser gerado pelos agentes com agilidade impressionante e rigorosamente inspecionado e governado pelos desenvolvedores. Como a escrita de código acontece de maneira muito mais rápida e fluida, o tempo investido na entrega de soluções cai drasticamente. Além disso, o código gerado conta com toda a robustez de padrões de excelência da indústria, garantindo total manutenibilidade, testabilidade e escalabilidade a longo prazo.
+
+---
+
 ## 1. O Novo Paradigma do Domain-Driven Design (DDD) e o Papel Universal do "Desenvolvedor"
 
 Quando Eric Evans escreveu o seu clássico livro sobre Domain-Driven Design, sua premissa fundamental não era sobre como mapear tabelas no banco de dados, mas sim que **o coração do software está na sua capacidade de resolver problemas relacionados ao domínio do usuário**. Ao removermos a barreira da implementação técnica mecânica (agora delegada à IA), aplicamos o DDD na sua forma mais pura: o foco incansável no negócio.
 
 Neste cenário de revolução, **o termo "Desenvolvedor" ganha um significado universal**. Todos os envolvidos na concepção do produto (Product Managers, Designers, Engineering Managers, Staff ou especialistas de negócio) são Desenvolvedores.
+
+Em uma verdadeira sinergia multidisciplinar, a equipe atua de forma orquestrada, onde cada um apoia com sua expertise humana insubstituível. São os desenvolvedores (em seu sentido amplo) que conduzem essa inteligência coletiva, guiando os agentes de IA na escrita iterativa dos planos (`plan.md`), escopos de épicos (`index.md`) e vinculando essas definições aos acordos técnicos da equipe. Toda essa riqueza de intenção é documentada de forma colaborativa nos arquivos `.md`, criando especificações perfeitamente claras para o agente escrever e estruturar a solução final.
 
 Na especificação guiada pelos humanos, o foco absoluto recai sobre os seguintes pilares do DDD conceitual:
 
