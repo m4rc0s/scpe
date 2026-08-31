@@ -1,13 +1,13 @@
 # Spec-Compiled Product Engineering (SCPE)
 
-## Visão Geral
-O **Spec-Compiled Product Engineering (SCPE)** é o framework que unifica o **Spec-Native Product Architecture (SNPA)** e o **Autonomous Development Protocol (ADP)** sob os princípios imutáveis de Domain-Driven Design (DDD) e **Incremental Feature Discovery**.
+## Overview
+**Spec-Compiled Product Engineering (SCPE)** is the framework that unifies **Spec-Native Product Architecture (SNPA)** and the **Autonomous Development Protocol (ADP)** under the immutable principles of Domain-Driven Design (DDD) and **Incremental Feature Discovery**.
 
-## Princípios Invioláveis (Cumulative Legacy)
-1. **Spec-First Inversion & Markdown SSOT:** A documentação em Markdown é a única fonte da verdade e o contrato imutável.
-2. **Incremental Feature Discovery:** Foco na visão macro da feature mais importante para o momento do negócio, rejeitando mapeamento exaustivo do zero e abraçando aprendizado contínuo, iteração e falhas precoces.
-3. **SNPA & Repositório Invertido:** Isolamento absoluto de workspace por produto (`$HOME/product_design/<produto>/`) e manifestos universais de aplicação (`app_liquid.md`) em `apps/`.
-4. **ADP (Autonomous Development Protocol):** Pipeline em ondas (*non-waterfall*) com Upstream, Readiness Gate, Downstream de tarefas atômicas (`tasks.md`), máquina de estados formal por épico e auditoria via `quick_status.md`.
-5. **Desenvolvedor Universal:** Todos na equipe (PMs, Designers, Staff, Engenheiros) participam ativamente da modelagem conceitual e intenção de negócio.
+## Inviolable Principles (Cumulative Legacy)
+1. **Spec-First Inversion & Markdown SSOT:** Documentation in Markdown is the single source of truth (SSOT) and the immutable contract.
+2. **Incremental Feature Discovery:** Focus on the macro vision of the most critical feature for current business needs, rejecting exhaustive upfront mapping and embracing continuous learning, rapid iteration, and failing early.
+3. **SNPA & Inverted Repository:** Absolute workspace isolation per product (`$HOME/product_design/<product>/`) and universal application manifests (`app_liquid.md`) in `apps/`.
+4. **ADP (Autonomous Development Protocol):** Wave-based pipeline (*non-waterfall*) with Upstream, Readiness Gate, Downstream atomic task execution (`tasks.md`), formal epic state machine, and real-time auditing via `quick_status.md`.
+5. **Universal Developer:** Everyone on the team (PMs, Designers, Staff, Engineers) actively participates in conceptual modeling and capturing business intent.
 
-A versão vigente do método é sempre a apontada pela tag Git mais recente (`git tag`) — não há número de versão no nome de arquivo.
+The current active version of the method is always pointed to by the latest Git tag (`git tag`) — there is no version number in the file name.

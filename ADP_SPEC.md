@@ -1,14 +1,14 @@
 # Autonomous Development Protocol (ADP)
 
-## 1. Visão Geral
-O **Autonomous Development Protocol (ADP)** é o protocolo operacional que rege o fluxo de trabalho do framework **SCPE**.
+## 1. Overview
+The **Autonomous Development Protocol (ADP)** is the operational protocol governing the workflow of the **SCPE** framework.
 
-## 2. Pilares do Protocolo
-1. **Incremental Feature Discovery:** Construção iterativa focada na feature mais prioritária do negócio atual, sem cascata exaustiva prévia.
-2. **Hierarquia de Features (`index.md` & Épicos SMART):** O uso universal de `index.md` para pontos de entrada em features e épicos.
-3. **Pipeline em Onda (Non-Waterfall):**
-   - **Upstream:** Definição da feature prioritária e estruturação do `plan.md` com IA como co-piloto.
-   - **Readiness Gate:** Validação técnica e marcação como `Ready` pelo FDE/Tech Lead.
-   - **Downstream:** Execução iterativa de tarefas atômicas em `tasks.md` gerando código em `apps/` com `app_liquid.md`.
-   - **Auditoria:** Rastreio em tempo real via `quick_status.md`.
-4. **Máquina de Estados do Épico:** `quick_status.md` declara um de seis estados formais — `Draft → Ready → WIP → Done`, com `Blocked` e `Stale` como desvios controlados — cada transição escrita apenas por quem a executa. Ver especificação completa em [`SCPE_METHOD.md`](SCPE_METHOD.md#44-máquina-de-estados-do-épico).
+## 2. Protocol Pillars
+1. **Incremental Feature Discovery:** Iterative construction focused on the highest-priority business feature right now, without prior exhaustive waterfall mapping.
+2. **Feature Hierarchy (`index.md` & SMART Epics):** Universal use of `index.md` as the entry point for features and epics.
+3. **Wave Pipeline (Non-Waterfall):**
+   - **Upstream:** Definition of the priority feature and structuring of `plan.md` with AI as a co-pilot.
+   - **Readiness Gate:** Technical validation and marking as `Ready` by the FDE/Tech Lead.
+   - **Downstream:** Iterative execution of atomic tasks in `tasks.md` generating code in `apps/` alongside `app_liquid.md`.
+   - **Audit:** Real-time tracking via `quick_status.md`.
+4. **Epic State Machine:** `quick_status.md` declares one of six formal states — `Draft → Ready → WIP → Done`, with `Blocked` and `Stale` as controlled deviations — each transition written strictly by the actor executing it. See complete specification in [`SCPE_METHOD.md`](SCPE_METHOD.md#44-epic-state-machine).

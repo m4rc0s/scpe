@@ -1,108 +1,108 @@
 # Spec-Compiled Product Engineering (SCPE)
 
-> **Um framework de Spec-Native Product Architecture (SNPA), operado pelo Autonomous Development Protocol (ADP), fundamentado em descoberta incremental de domínio, modelagem colaborativa da intenção de negócio e rastreabilidade formal entre especificação e implementação.**
+> **A Spec-Native Product Architecture (SNPA) framework, operated by the Autonomous Development Protocol (ADP), grounded in incremental domain discovery, collaborative modeling of business intent, and formal traceability between specification and implementation.**
 
 ---
 
-## 📋 Sumário Executivo & Manifesto
+## 📋 Executive Summary & Manifesto
 
-A Inteligência Artificial chegou e revolucionou, assim como em tantas outras áreas, a engenharia de software e, consequentemente, o desenvolvimento de produtos cujos meios são softwares, automatizando a criação de sintaxe com qualidade comprovada que, em muitos casos, supera a de desenvolvedores experientes.
+Artificial Intelligence has arrived and revolutionized software engineering and, consequently, the development of products built with software, automating syntax creation with proven quality that often surpasses that of experienced developers.
 
-Nesta metodologia, a documentação viva — estruturada puramente em **Markdown e linguagem natural** — é estabelecida como o contrato imutável e a única fonte da verdade (SSOT).
+In this methodology, living documentation — structured purely in **Markdown and natural language** — is established as the immutable contract and the single source of truth (SSOT).
 
-O framework fundamenta-se em pilares fundamentais:
+The framework is grounded in fundamental pillars:
 
-* **Incremental Feature Discovery (Visão Macro e Entrega Iterativa):** O foco não é tentar mapear ou descobrir um sistema inteiro do zero, mas sim construir em conjunto a visão macro da feature mais importante para o negócio naquele momento. Abraçamos o desenvolvimento incremental, o aprendizado contínuo através da prática, a entrega iterativa, a mitigação de riscos e a capacidade de falhar cedo para pivotar rapidamente.
-* **Spec-Native Product Architecture (SNPA):** Isolamento de workspace por produto e manifestos universais de aplicação (`app_liquid.md`) para gerenciar a camada física em `apps/`.
-* **Autonomous Development Protocol (ADP):** O protocolo operacional que garante que motores autônomos e agentes executem o downstream de forma padronizada, assíncrona e em ondas — com rastreabilidade formal entre a especificação e o que foi de fato implementado.
+* **Incremental Feature Discovery (Macro Vision and Iterative Delivery):** The focus is not attempting to map or discover an entire system from scratch, but rather collaboratively building the macro vision of the most critical feature for the business at that moment. We embrace incremental development, continuous learning through practice, iterative delivery, risk mitigation, and the ability to fail early and pivot quickly.
+* **Spec-Native Product Architecture (SNPA):** Workspace isolation per product and universal application manifests (`app_liquid.md`) to manage the physical layer in `apps/`.
+* **Autonomous Development Protocol (ADP):** The operational protocol ensuring autonomous engines and agents execute downstream in a standardized, asynchronous, wave-based manner — with formal traceability between the specification and what was actually implemented.
 
-### Por que padronizar a documentação em Markdown e Linguagem Natural?
+### Why Standardize Documentation in Markdown and Natural Language?
 
-A adoção de arquivos puramente em Markdown e linguagem natural oferece flexibilidade e clareza incomparáveis para equipes e ecossistemas orientados a IA:
+Adopting pure Markdown and natural language files offers unmatched flexibility and clarity for AI-driven teams and ecosystems:
 
-* **Legibilidade Universal (Humanos e IAs):** Qualquer pessoa da equipe (técnica ou de negócios) consegue ler, auditar e colaborar sem fricção, enquanto os agentes de IA processam o contexto perfeitamente.
-* **Versionamento Impecável:** O Git gerencia diffs limpos e lineares, permitindo rastrear a evolução da intenção de negócio e da arquitetura ao longo do tempo.
-* **Independência de Ferramentas:** A especificação pertence ao repositório do produto, mantendo a fonte única da verdade independente de plataformas proprietárias.
-
----
-
-## 0. O Ecossistema Global de Spec-Driven Development (SDD) e Nossos Diferenciais
-
-O movimento de **Spec-Driven Development (SDD)** e **Spec-First** integra a vanguarda atual da engenharia de software guiada por agentes, encontrando paralelo em iniciativas abertas da comunidade global de tecnologia:
-
-* **GitHub Spec-Kit (`github/spec-kit`):** O projeto de referência que padroniza o ciclo de Constituição → Especificação → Planejamento → Tarefas → Implementação para multiplataformas de agentes.
-* **OpenSpec / SpecDD (`specdd.ai`):** O movimento comunitário focado em formatos padronizados de arquivos de especificação e pastas de governança para mitigar alucinações de contexto em IAs.
-* **The SDD Standard (`mmanzini/Spec-driven-development`):** Repositórios abertos que formalizam templates de Product Briefs, Steering Docs e Feature Specs.
-
-### Aspectos e Práticas Invioláveis Destacadas por este Método:
-
-* **Isolamento Absoluto por Workspace (Contêiner por Produto):** Protege contra alucinações de contexto ao restringir o escopo operacional do agente estritamente à pasta do produto ativo.
-* **A Inversão do Repositório do Produto:** Antigamente, clonávamos o código-fonte de microsserviços isolados. Agora, clonamos o **Produto** por completo, onde a documentação estruturada capacita os agentes de IA a trabalharem com eficiência, e o código é um *asset* subordinado para validar, executar, testar e fazer o deploy.
-* **Hierarquia Estrutural `Produto → Apps`:** O produto centraliza tudo de forma clara: `Produto → Apps → {AppBackend, Client, etc.}`.
-* **Excelência Técnica na Implementação (`apps/`):** O código gerado aplica rigorosamente padrões consolidados da indústria (**S.O.L.I.D., Clean Architecture, Arquitetura Hexagonal, Ports and Adapters, Design Patterns e MVC**).
-* **Manifesto de Aplicação Nativo (`app_liquid.md`):** Um descritor universal e agnóstico em Markdown que entrega instantaneamente ao agente a responsabilidade, o ecossistema e os limites de cada software contido em `apps/`.
+* **Universal Readability (Humans and AIs):** Anyone on the team (technical or business) can read, audit, and collaborate without friction, while AI agents process the context seamlessly.
+* **Flawless Version Control:** Git manages clean and linear diffs, allowing teams to track the evolution of business intent and architecture over time.
+* **Tooling Independence:** The specification belongs to the product repository, keeping the single source of truth independent of proprietary platforms.
 
 ---
 
-**Visão Estratégica:** O código-fonte, que historicamente consumia grande parte do esforço de construção de um time, passa a ser gerado pelos agentes com agilidade impressionante e rigorosamente inspecionado e governado pelos desenvolvedores. Como a escrita de código acontece de maneira muito mais rápida e fluida, o tempo investido na entrega de soluções cai drasticamente. Além disso, o código gerado conta com toda a robustez de padrões de excelência da indústria, garantindo total manutenibilidade, testabilidade e escalabilidade a longo prazo.
+## 0. The Global Spec-Driven Development (SDD) Ecosystem and Our Differentiators
+
+The **Spec-Driven Development (SDD)** and **Spec-First** movement forms the vanguard of agent-guided software engineering today, finding parallels in open initiatives across the global tech community:
+
+* **GitHub Spec-Kit (`github/spec-kit`):** The reference project standardizing the Constitution → Specification → Planning → Tasks → Implementation cycle across multi-agent platforms.
+* **OpenSpec / SpecDD (`specdd.ai`):** The community movement focused on standardized specification file formats and governance directories to mitigate AI context hallucinations.
+* **The SDD Standard (`mmanzini/Spec-driven-development`):** Open repositories formalizing templates for Product Briefs, Steering Docs, and Feature Specs.
+
+### Inviolable Aspects and Practices Highlighted by this Method:
+
+* **Absolute Workspace Isolation (Container per Product):** Protects against context hallucinations by strictly restricting the agent's operational scope to the active product folder.
+* **Product Repository Inversion:** Historically, we cloned the source code of isolated microservices. Now, we clone the entire **Product**, where structured documentation empowers AI agents to work efficiently, and code is a subordinate asset used to validate, execute, test, and deploy.
+* **Structural Hierarchy `Product → Apps`:** The product centralizes everything clearly: `Product → Apps → {AppBackend, Client, etc.}`.
+* **Technical Excellence in Implementation (`apps/`):** Generated code rigorously applies established industry standards (**S.O.L.I.D., Clean Architecture, Hexagonal Architecture, Ports and Adapters, Design Patterns, and MVC**).
+* **Native Application Manifest (`app_liquid.md`):** A universal, agnostic Markdown descriptor that instantly gives the agent the responsibilities, ecosystem, and boundaries of each piece of software inside `apps/`.
 
 ---
 
-## 1. O Novo Paradigma do Domain-Driven Design (DDD) e o Papel Universal do "Desenvolvedor"
-
-Quando Eric Evans escreveu o seu clássico livro sobre Domain-Driven Design, sua premissa fundamental não era sobre como mapear tabelas no banco de dados, mas sim que **o coração do software está na sua capacidade de resolver problemas relacionados ao domínio do usuário**. Ao removermos a barreira da implementação técnica mecânica (agora delegada à IA), aplicamos o DDD na sua forma mais pura: o foco incansável no negócio.
-
-Neste cenário de revolução, **o termo "Desenvolvedor" ganha um significado universal**. Todos os envolvidos na concepção do produto (Product Managers, Designers, Engineering Managers, Staff ou especialistas de negócio) são Desenvolvedores.
-
-Em uma verdadeira sinergia multidisciplinar, a equipe atua de forma orquestrada, onde cada um apoia com sua expertise humana insubstituível. São os desenvolvedores (em seu sentido amplo) que conduzem essa inteligência coletiva, guiando os agentes de IA na escrita iterativa dos planos (`plan.md`), escopos de épicos (`index.md`) e vinculando essas definições aos acordos técnicos da equipe. Toda essa riqueza de intenção é documentada de forma colaborativa nos arquivos `.md`, criando especificações perfeitamente claras para o agente escrever e estruturar a solução final.
-
-Na especificação guiada pelos humanos, o foco absoluto recai sobre os seguintes pilares do DDD conceitual:
-
-* **Linguagem Ubíqua (O "Prompt" Definitivo):** Um glossário rico e unificado (`glossary.md`) que blinda o sistema contra alucinações. Se o negócio define que um "Contrato" difere de uma "Proposta", a IA e a equipe devem usar exatamente esses termos.
-* **Bounded Contexts (Foco Autônomo):** Limites claros de onde cada regra de negócio começa e termina. Para a IA, isso garante foco absoluto no micro-universo da feature.
-* **Entidades e Regras de Negócio (Invariantes):** Entidades possuem identidade única e ciclo de vida, regidas por "invariantes" — regras que nunca podem ser quebradas.
-* **Eventos de Domínio:** Capturam a dinâmica fluida de reações e mudanças de estado crítico no sistema (*"Quando 'Pedido' for pago, notifique 'Expedição'"*).
+**Strategic Vision:** Source code, which historically consumed the lion's share of a team's engineering effort, is now generated by agents with impressive agility and rigorously inspected and governed by developers. Because writing code happens much faster and more fluidly, time-to-solution drops dramatically. Furthermore, generated code incorporates the robustness of industry-standard best practices, ensuring long-term maintainability, testability, and scalability.
 
 ---
 
-## 2. Arquitetura: Spec-Native Product Architecture (SNPA)
+## 1. The New Paradigm of Domain-Driven Design (DDD) and the Universal Role of the "Developer"
 
-Organizando o portfólio de forma limpa no ambiente de desenvolvimento (ex: `$HOME/product_design/`), o princípio fundamental é o isolamento absoluto: **um workspace dedicado por produto**.
+When Eric Evans wrote his classic book on Domain-Driven Design, his foundational premise was not about how to map tables in a database, but that **the heart of software lies in its ability to solve problems related to the user's domain**. By removing the mechanical technical implementation barrier (now delegated to AI), we apply DDD in its purest form: relentless focus on the business.
 
-### Anatomia da Raiz do Produto (Workspace Isolado):
+In this revolutionary landscape, **the term "Developer" takes on a universal meaning**. Everyone involved in product conception (Product Managers, Designers, Engineering Managers, Staff Engineers, or domain experts) is a Developer.
+
+In true multidisciplinary synergy, the team operates in an orchestrated fashion where each member contributes irreplaceable human expertise. Developers (in the broad sense) drive this collective intelligence, guiding AI agents in iteratively writing plans (`plan.md`), scoping epics (`index.md`), and anchoring these definitions to the team's technical agreements. All of this rich intent is collaboratively documented in `.md` files, creating crystal-clear specifications for the agent to write and structure the final solution.
+
+In human-guided specification, absolute focus is placed on the following conceptual DDD pillars:
+
+* **Ubiquitous Language (The Definitive "Prompt"):** A rich, unified glossary (`glossary.md`) that shields the system from hallucinations. If the business defines that a "Contract" differs from a "Proposal", the AI and the team must use those exact terms.
+* **Bounded Contexts (Autonomous Focus):** Clear boundaries defining where each business rule begins and ends. For the AI, this ensures laser focus on the feature's micro-universe.
+* **Entities and Business Rules (Invariants):** Entities hold unique identities and lifecycles governed by "invariants" — rules that must never be broken.
+* **Domain Events:** Capturing the dynamic flow of reactions and critical state changes across the system (*"When 'Order' is paid, notify 'Shipping'"*).
+
+---
+
+## 2. Architecture: Spec-Native Product Architecture (SNPA)
+
+Organizing the portfolio cleanly in the development environment (e.g., `$HOME/product_design/`), the core principle is absolute isolation: **one dedicated workspace per product**.
+
+### Product Root Anatomy (Isolated Workspace):
 
 ```text
-meuproduto/
-├── index.md                 # Guia mestre da estrutura, sumário e navegação geral
-├── product_vision.md        # Visão macro, objetivos de negócio, rentabilidade e problema central
-├── roadmap.md               # Direcionamento estratégico e marcos globais do produto
-├── glossary.md              # Dicionário da Linguagem Ubíqua (termos de domínio invariáveis)
-├── architecture.md          # Padrões C4 Model, escolhas sistêmicas abstratas e integrações
-├── techinal_deal.md         # Acordos técnicos, algemas da IA, restrições e stack homologada
-├── team_playbook.md         # Regras de engajamento, fluxo de trabalho e cultura da equipe
-├── quick_status.md          # Painel de controle global e dinâmico do produto
-├── assets/                  # Documentos de referência, wireframes e assets visuais
-├── apps/                    # Camada física de ativos: softwares sob padrões rígidos de engenharia
-└── features/                # Ciclo de desenvolvimento fatiado por domínios e funcionalidades
+myproduct/
+├── index.md                 # Master guide to structure, summary, and general navigation
+├── product_vision.md        # Macro vision, business goals, profitability, and core problem
+├── roadmap.md               # Strategic direction and global product milestones
+├── glossary.md              # Ubiquitous Language dictionary (invariant domain terms)
+├── architecture.md          # C4 Model patterns, abstract systemic choices, and integrations
+├── techinal_deal.md         # Technical agreements, AI guardrails, constraints, and approved stack
+├── team_playbook.md         # Rules of engagement, workflow, and team culture
+├── quick_status.md          # Global dynamic control panel of the product
+├── assets/                  # Reference documents, wireframes, and visual assets
+├── apps/                    # Physical asset layer: software built to rigorous engineering standards
+└── features/                # Development lifecycle sliced by domains and functionalities
 ```
 
 ---
 
-## 3. O Ecossistema de Aplicações (`apps/`) e o Manifesto (`app_liquid.md`)
+## 3. The Application Ecosystem (`apps/`) and Manifest (`app_liquid.md`)
 
-A pasta `apps/` abriga o software físico gerado como consequência natural da especificação. Cada aplicação possui seu próprio manifesto descritivo universal em Markdown: o **`app_liquid.md`**.
+The `apps/` folder houses the physical software generated as a natural consequence of the specification. Each application has its own universal descriptive manifest in Markdown: **`app_liquid.md`**.
 
 ```text
 apps/
 ├── api-core/
-│   ├── app_liquid.md        # Manifesto descritivo da aplicação
-│   └── src/ ...             # Código fonte gerado via Agente (Clean Arch / Hexagonal)
+│   ├── app_liquid.md        # Application descriptive manifest
+│   └── src/ ...             # Source code generated via Agent (Clean Arch / Hexagonal)
 └── desktop-client/
-    ├── app_liquid.md        # Manifesto descritivo da aplicação
-    └── src/ ...             # Código fonte gerado via Agente
+    ├── app_liquid.md        # Application descriptive manifest
+    └── src/ ...             # Source code generated via Agent
 ```
 
-### Estrutura Padrão do `app_liquid.md`:
+### Standard `app_liquid.md` Structure:
 
 ```markdown
 # App Manifest: api-core
@@ -111,121 +111,121 @@ apps/
 - **app_type:** backend-rest-api
 - **tech_stack:** Kotlin, Spring Boot, PostgreSQL
 - **design_patterns:** Clean Architecture, Hexagonal (Ports and Adapters), S.O.L.I.D.
-- **app_description:** Serviço central responsável pelo processamento de transações e ledger financeiro.
-- **entrypoint:** src/main/kotlin/com/meuproduto/Main.kt
-- **dependencies_scope:** Comunicação síncrona via HTTP com o client e mensageria assíncrona para eventos de domínio.
+- **app_description:** Core service responsible for transaction processing and financial ledger.
+- **entrypoint:** src/main/kotlin/com/myproduct/Main.kt
+- **dependencies_scope:** Synchronous HTTP communication with client and asynchronous messaging for domain events.
 ```
 
 ---
 
-## 4. Protocolo: Autonomous Development Protocol (ADP)
+## 4. Protocol: Autonomous Development Protocol (ADP)
 
-### 4.1. Incremental Feature Discovery (Visão Macro e Entrega Iterativa)
+### 4.1. Incremental Feature Discovery (Macro Vision and Iterative Delivery)
 
-O processo de especificação rejeita a tentativa exaustiva e burocrática de mapear um sistema inteiro do início ao fim. Em vez disso, a equipe foca em construir a **visão macro da feature mais importante para o negócio naquele momento**:
+The specification process rejects the exhaustive, bureaucratic attempt to map an entire system from start to finish upfront. Instead, the team focuses on building the **macro vision of the most critical feature for the business at that moment**:
 
-* **Aprendizado Contínuo e Iteração:** Adota-se o desenvolvimento incremental ("aprender enquanto faz"), validando hipóteses rapidamente, iterando sobre as entregas reais e garantindo espaço para falhar cedo, corrigir rotas e evoluir o produto de forma orgânica.
-* **IA como Co-Piloto Colaborativo:** Os papéis estratégicos do time utilizam os agentes para rascunhar e estruturar rapidamente a intenção pura da feature prioritária em artefatos textuais padronizados (`plan.md`).
+* **Continuous Learning and Iteration:** We embrace incremental development ("learn as you build"), validating hypotheses quickly, iterating on real deliveries, and ensuring space to fail early, adjust course, and evolve the product organically.
+* **AI as a Collaborative Co-Pilot:** Strategic team roles leverage agents to rapidly draft and structure the pure intent of the priority feature into standardized text artifacts (`plan.md`).
 
-### 4.2. O Ciclo de Features, Épicos e a Padronização do `index.md`
+### 4.2. Feature and Epic Lifecycle and the Standardization of `index.md`
 
-A gestão ágil acontece nativamente na árvore de diretórios. Padronizamos o uso de **`index.md`** como ponto de entrada universal para parsers e IDEs orientadas a IA.
+Agile management happens natively in the directory tree. We standardize **`index.md`** as the universal entry point for parsers and AI-oriented IDEs.
 
 ```text
 features/
-└── [nome_da_feature]/
-    ├── index.md             # Visão geral da funcionalidade, escopo de negócio e valor
-    ├── feat_roadmap.md      # Marcos temporais da feature
-    ├── quick_status.md      # Status local atual (ver máquina de estados em 4.4)
-    └── epics/               # Divisão da feature em pacotes atômicos
-        └── [nome_do_epico]/
-            ├── index.md         # Escopo detalhado do Épico e Bounded Contexts
-            ├── plan.md          # Enabler de Domínio: DDD conceitual estruturado para entrega incremental
-            ├── tasks.md         # Fila de Tarefas Atômicas para o Agente executar
-            ├── quick_status.md  # Rastro local de auditoria e status de andamento
-            └── epic_roadmap.md  # Planejamento tático de execução
+└── [feature_name]/
+    ├── index.md             # Feature overview, business scope, and value
+    ├── feat_roadmap.md      # Feature timeline milestones
+    ├── quick_status.md      # Current local status (see state machine in 4.4)
+    └── epics/               # Breakdown of the feature into atomic packages
+        └── [epic_name]/
+            ├── index.md         # Detailed Epic scope and Bounded Contexts
+            ├── plan.md          # Domain Enabler: Conceptual DDD structured for incremental delivery
+            ├── tasks.md         # Atomic Task Queue for Agent execution
+            ├── quick_status.md  # Local audit trail and progress status
+            └── epic_roadmap.md  # Tactical execution planning
 ```
 
-#### 4.2.1. Direcionamento de Planejamento: Fatiamento Vertical (Recomendação Opcional)
+#### 4.2.1. Planning Guidance: Vertical Slicing (Optional Recommendation)
 
-Ao decompor uma feature em épicos, e um épico em tarefas atômicas (`tasks.md`), a forma como o trabalho é fatiado determina quando o usuário passa a receber valor real — e, por consequência, quando o time começa de fato a aprender com o uso real (Seção 4.1).
+When breaking down a feature into epics, and an epic into atomic tasks (`tasks.md`), the way work is sliced dictates when the user actually receives real value — and consequently, when the team starts learning from real usage (Section 4.1).
 
-* **Fatiamento Horizontal:** organiza o trabalho por camada técnica — primeiro todo o modelo de dados, depois toda a API, depois toda a interface. O produto só entrega valor observável quando todas as camadas convergem, adiando a validação de hipóteses e o aprendizado contínuo.
-* **Fatiamento Vertical (recomendação padrão do método):** cada épico — e, sempre que possível, cada tarefa em `tasks.md` — atravessa todas as camadas necessárias (dado, domínio, API, interface) para entregar, ainda que de forma mínima, um incremento de valor tangível para o usuário desde o primeiro épico, o momento zero. Cada fatia vertical já é, por si só, uma oportunidade real de validar hipótese, aprender e pivotar — reforçando diretamente o pilar de Incremental Feature Discovery.
+* **Horizontal Slicing:** Organizes work by technical layer — first all the data models, then the entire API, then the whole UI. The product only delivers observable value when all layers converge, postponing hypothesis validation and continuous learning.
+* **Vertical Slicing (recommended default of the method):** Each epic — and whenever possible, each task in `tasks.md` — cuts across all necessary layers (data, domain, API, UI) to deliver, even if minimally, a tangible increment of value to the user from the very first epic (moment zero). Each vertical slice is an immediate opportunity to validate hypotheses, learn, and pivot — directly reinforcing the Incremental Feature Discovery pillar.
 
-**Caráter opcional:** este é um direcionamento recomendado, não uma invariante do método. O time (Tech Lead / FDE, no Readiness Gate) pode optar por outra estratégia de fatiamento quando o contexto técnico ou de negócio justificar — por exemplo, uma migração de infraestrutura ou uma reescrita de camada de dados que não possui, por natureza, valor perceptível fatiável verticalmente. Quando o time optar por não seguir o fatiamento vertical, essa decisão e sua justificativa devem ser registradas em `plan.md` ou `epic_roadmap.md`, preservando a documentação como fonte da verdade também sobre as escolhas de planejamento.
+**Optional Nature:** This is a recommended guideline, not an invariant of the method. The team (Tech Lead / FDE at the Readiness Gate) may choose a different slicing strategy whenever technical or business contexts justify it — for instance, an infrastructure migration or a data-layer rewrite that inherently provides no vertically sliceable user-perceptible value. When opting out of vertical slicing, this decision and its rationale must be documented in `plan.md` or `epic_roadmap.md`, preserving documentation as the source of truth for planning decisions as well.
 
-### 4.3. O Pipeline em Onda (Non-Waterfall Workflow)
+### 4.3. The Wave Pipeline (Non-Waterfall Workflow)
 
-O ADP rejeita fluxos em cascata. O trabalho flui de forma concorrente, contínua e assíncrona através de fases interligadas:
+ADP rejects waterfall workflows. Work flows concurrently, continuously, and asynchronously across interconnected phases:
 
-1. **Upstream (Incremental Feature Discovery & Alinhamento Estratégico):** A equipe alinha a prioridade de negócio atual, desenhando a visão macro da feature mais importante e utilizando agentes como co-pilotos para estruturar o `plan.md`.
-2. **Readiness Gate (A Validação Técnica):** O Tech Lead / FDE valida a consistência do modelo conceitual, assegura o alinhamento arquitetural e define o status como `Ready`.
-3. **Downstream (Execução Padronizada / Code as Consequence):** Com o plano aprovado, o agente traduz o `plan.md` em tarefas atômicas no `tasks.md`. Motores autônomos executam a fila iterativamente, alocando o código gerado em `apps/` junto ao respectivo `app_liquid.md`.
-4. **Auditoria Contínua:** Progresso, aprendizado prático e bloqueios são rastreados em tempo real nos arquivos `quick_status.md`.
+1. **Upstream (Incremental Feature Discovery & Strategic Alignment):** The team aligns on the current business priority, drafting the macro vision of the most critical feature and using agents as co-pilots to structure `plan.md`.
+2. **Readiness Gate (Technical Validation):** The Tech Lead / FDE validates conceptual model consistency, ensures architectural alignment, and sets the status to `Ready`.
+3. **Downstream (Standardized Execution / Code as Consequence):** With the plan approved, the agent translates `plan.md` into atomic tasks in `tasks.md`. Autonomous engines execute the queue iteratively, placing generated code in `apps/` alongside the respective `app_liquid.md`.
+4. **Continuous Audit:** Progress, practical learnings, and blockers are tracked in real-time within `quick_status.md` files.
 
-### 4.4. Máquina de Estados do Épico
+### 4.4. Epic State Machine
 
-`quick_status.md`, no nível de épico, declara exatamente um destes estados — nenhum outro valor é válido:
+`quick_status.md`, at the epic level, declares exactly one of these states — no other value is valid:
 
 ```text
 Draft → Ready → WIP → Done
   ↑        ↓      ↓
   └──── Blocked  Stale
            │        │
-           └───→ (retorna a Ready após resolução)
+           └───→ (returns to Ready after resolution)
 ```
 
-- **`Draft`** — em modelagem no Upstream; `plan.md` ainda não submetido ao Readiness Gate.
-- **`Ready`** — aprovado no Readiness Gate; elegível para execução Downstream.
-- **`WIP`** — em execução por um motor autônomo.
-- **`Blocked`** — execução interrompida por dependência externa ou defeito descoberto; retorna a `Ready` quando o bloqueio é removido, não avança sozinho.
-- **`Done`** — código em `apps/` corresponde ao `plan.md` vigente no momento da entrega.
-- **`Stale`** — um épico `Done` cujo `plan.md` foi alterado após a entrega transiciona automaticamente para este estado (ver 4.5). Só um novo ciclo de Readiness Gate devolve o épico a `Ready`.
+- **`Draft`** — in modeling during Upstream; `plan.md` not yet submitted to the Readiness Gate.
+- **`Ready`** — approved at the Readiness Gate; eligible for Downstream execution.
+- **`WIP`** — actively being executed by an autonomous engine.
+- **`Blocked`** — execution interrupted due to external dependencies or discovered defects; returns to `Ready` when the blocker is resolved, does not proceed autonomously.
+- **`Done`** — code in `apps/` matches the active `plan.md` at the time of delivery.
+- **`Stale`** — a `Done` epic whose `plan.md` was modified post-delivery automatically transitions to this state (see 4.5). Only a new Readiness Gate cycle returns the epic to `Ready`.
 
-Transições são escritas exclusivamente por quem executa a ação que as causa (Tandem move `Draft → Ready` via Gate; motor autônomo move `Ready → WIP → Done`; qualquer mudança em `plan.md` move `Done → Stale` automaticamente). Isso torna o protocolo implementável por um agente sem margem de interpretação.
+Transitions are written exclusively by the actor performing the action that causes them (Tandem moves `Draft → Ready` via Gate; autonomous engine moves `Ready → WIP → Done`; any edit to `plan.md` moves `Done → Stale` automatically). This makes the protocol unambiguous and executable by an agent.
 
-### 4.5. Protocolo de Deriva de Especificação (Spec Drift)
+### 4.5. Spec Drift Protocol
 
-**Regra:** nenhum commit em `plan.md` de um épico em estado `Done` é silencioso.
+**Rule:** No commit to `plan.md` on an epic in `Done` state is silent.
 
-Ao detectar uma alteração em `plan.md` cujo épico está `Done`, o estado transiciona para `Stale` e o épico reentra na fila do Readiness Gate — não na fila do Upstream, porque o modelo já foi revalidado uma vez; o que precisa de revalidação agora é a *diferença* entre o modelo antigo e o novo, não o modelo inteiro.
+Upon detecting a modification to `plan.md` whose epic is `Done`, the state transitions to `Stale` and the epic re-enters the Readiness Gate queue — not the Upstream queue, because the model was already validated once; what requires re-validation now is the *diff* between the old and new model, not the entire model.
 
-O Tech Lead, no Readiness Gate, avalia a diferença e decide entre duas ações, registradas em `epic_roadmap.md`:
+The Tech Lead, at the Readiness Gate, evaluates the difference and decides between two actions, recorded in `epic_roadmap.md`:
 
-- **Re-execução** — a mudança afeta comportamento já implementado; o épico volta a `Ready` e um novo ciclo Downstream regenera as partes afetadas de `apps/`.
-- **Aceitação de deriva documentada** — a mudança é cosmética ou não afeta o comportamento implementado; o Tech Lead marca o épico `Done` novamente, registrando explicitamente por que a divergência entre `plan.md` e `apps/` é aceitável.
+- **Re-execution** — the change affects previously implemented behavior; the epic returns to `Ready` and a new Downstream cycle regenerates the affected parts of `apps/`.
+- **Documented drift acceptance** — the change is cosmetic or does not affect implemented behavior; the Tech Lead marks the epic `Done` again, explicitly documenting why the divergence between `plan.md` and `apps/` is acceptable.
 
-Isso garante que "documentação como fonte única da verdade" não seja uma afirmação aspiracional, mas uma propriedade que o protocolo ativamente mantém ou declara violada — nunca deixa a violação implícita.
+This ensures that "documentation as single source of truth" is not an aspirational statement, but an actively maintained property that the protocol enforces or declares violated — never leaving the violation implicit.
 
-### 4.6. Aplicações Multi-Repositório
+### 4.6. Multi-Repository Applications
 
-Quando um `app` em `apps/` reside em um repositório físico separado do workspace do produto, `app_manifest.md` permanece dentro de `apps/<app>/` — a especificação nunca sai do workspace isolado — mas o código-fonte é substituído por um ponteiro:
+When an `app` in `apps/` resides in a physical repository separate from the product workspace, `app_manifest.md` remains inside `apps/<app>/` — the specification never leaves the isolated workspace — but the source code is replaced by a pointer:
 
 ```text
 apps/
 └── api-core/
-    ├── app_manifest.md      # Permanece no workspace do produto
-    └── repo_pointer.md      # URL do repositório, branch de integração, commit de referência
+    ├── app_manifest.md      # Remains inside the product workspace
+    └── repo_pointer.md      # Repository URL, integration branch, reference commit
 ```
 
-`repo_pointer.md` contém apenas metadados de localização — nunca código. O motor autônomo, ao executar Downstream para um épico associado a esse app, escreve no repositório externo referenciado, mas o estado (`quick_status.md`) e a especificação (`plan.md`, `app_manifest.md`) continuam vivendo, sem exceção, dentro do workspace isolado do produto (Seção 2). O que se distribui é a *compilação*, nunca a *especificação* — o princípio de isolamento da Seção 2 permanece intacto.
+`repo_pointer.md` contains only location metadata — never code. The autonomous engine, when executing Downstream for an epic associated with this app, writes to the referenced external repository, but status (`quick_status.md`) and specification (`plan.md`, `app_manifest.md`) continue to live, without exception, inside the product's isolated workspace (Section 2). What is distributed is the *compilation*, never the *specification* — the isolation principle of Section 2 remains intact.
 
 ---
 
-## 5. O Fluxo de Trabalho com Agentes (Spec-First com Governança Técnica)
+## 5. Agent Workflow (Spec-First with Technical Governance)
 
-* **Contexto Base:** Refinamento colaborativo dos arquivos da raiz (`product_vision.md`, `architecture.md`, `techinal_deal.md`), estabelecendo as diretrizes de código e padrões de engenharia (Clean Arch, S.O.L.I.D., Hexagonal).
-* **Definição de Feature:** Abertura do escopo da feature via `index.md`, alinhando perfeitamente as regras de negócio e o valor entregue ao usuário.
-* **Modelagem no Épico (`plan.md`):** O agente propõe o rascunho aplicando DDD conceitual com base no contexto. O engenheiro revisa e aprimora a intenção pura de forma leve e interativa.
-* **Planejamento Operacional (`tasks.md`):** O agente traduz o plano conceitual em uma fila clara de tarefas atômicas para a construção do código.
-* **Geração Ágil e Inspeção Humana (`apps/`):** O agente gera a estrutura de código em minutos. O desenvolvedor atua como um arquiteto revisor, garantindo a excelência técnica, os padrões de projeto e a escalabilidade.
-* **Auditoria Contínua:** Acompanhamento transparente do progresso e fluidez das entregas através dos arquivos `quick_status.md`.
+* **Base Context:** Collaborative refinement of product root files (`product_vision.md`, `architecture.md`, `techinal_deal.md`), establishing coding guidelines and engineering standards (Clean Arch, S.O.L.I.D., Hexagonal).
+* **Feature Definition:** Scoping the feature via `index.md`, aligning business rules and delivered user value.
+* **Epic Modeling (`plan.md`):** The agent drafts the plan applying conceptual DDD based on context. The engineer reviews and refines pure intent in a lightweight, interactive manner.
+* **Operational Planning (`tasks.md`):** The agent translates the conceptual plan into a clear queue of atomic tasks for code generation.
+* **Agile Generation and Human Inspection (`apps/`):** The agent generates the code structure in minutes. The developer acts as a reviewing architect, ensuring technical excellence, design patterns, and scalability.
+* **Continuous Audit:** Transparent tracking of delivery fluidity and progress across `quick_status.md` files.
 
 ---
 
-## Trade-offs Assumidos no Protocolo de Estados e Multi-Repositório
+## Trade-offs Assumed in the State Protocol and Multi-Repository Support
 
-- **Complexidade de estado.** Seis estados formais (Seção 4.4) substituem quatro estados informais. O custo é mais superfície de protocolo para o Tech Lead auditar; o ganho é que um agente pode implementar a máquina de estados sem ambiguidade.
-- **`Stale` cria trabalho de revisão obrigatório.** Toda edição de `plan.md` pós-entrega força uma passagem pelo Readiness Gate, mesmo quando a mudança é trivial. Isso é deliberado: o custo de uma revisão desnecessária é menor que o custo de uma deriva não detectada entre especificação e código em produção.
-- **`repo_pointer.md` introduz uma segunda fonte de verdade para localização de código.** O ponteiro pode ficar desatualizado se o repositório for migrado sem atualizar o manifesto. Esse risco é aceito porque a alternativa — embutir código de múltiplos repositórios dentro do workspace do produto — quebra o isolamento que é o princípio fundacional da Seção 2. Um mecanismo de verificação automática do ponteiro fica fora do escopo atual do método.
+- **State complexity.** Six formal states (Section 4.4) replace four informal states. The cost is more protocol surface for the Tech Lead to audit; the gain is that an agent can implement the state machine without ambiguity.
+- **`Stale` creates mandatory review overhead.** Every edit to `plan.md` post-delivery forces a pass through the Readiness Gate, even when trivial. This is deliberate: the cost of an unnecessary review is far lower than the cost of undetected drift between specification and production code.
+- **`repo_pointer.md` introduces a second source of truth for code location.** The pointer can become outdated if the repository is migrated without updating the manifest. This risk is accepted because the alternative — embedding code from multiple repositories within the product workspace — breaks the isolation that is the foundational principle of Section 2. An automated verification mechanism for pointers remains outside the current scope of the method.

@@ -1,202 +1,203 @@
 # 🌊 SCPE — Spec-Compiled Product Engineering
 
-> **A documentação vira o contrato. O código é a consequência.**
-> Um framework de Spec-Native Product Architecture (SNPA), operado pelo Autonomous Development Protocol (ADP), para times que constroem produtos com agentes de IA como parceiros de engenharia — não como autocomplete chique.
+> **Documentation becomes the contract. Code is the consequence.**
+> A Spec-Native Product Architecture (SNPA) framework, operated by the Autonomous Development Protocol (ADP), for teams building products with AI agents as engineering partners — not fancy autocomplete.
 
-[![Metodologia](https://img.shields.io/badge/metodologia-SCPE-6C5CE7)](SCPE_METHOD.md)
-[![Protocolo](https://img.shields.io/badge/protocolo-ADP-0984E3)](ADP_SPEC.md)
-[![Arquitetura](https://img.shields.io/badge/arquitetura-SNPA-00B894)](ARCHITECTURE.md)
-[![SSOT](https://img.shields.io/badge/SSOT-Markdown%20%2B%20Linguagem%20Natural-000000)](#-o-que-é-scpe)
-[![Versionamento](https://img.shields.io/badge/versionamento-git%20tags-success)](#-versões)
+[![Methodology](https://img.shields.io/badge/methodology-SCPE-6C5CE7)](SCPE_METHOD.md)
+[![Protocol](https://img.shields.io/badge/protocol-ADP-0984E3)](ADP_SPEC.md)
+[![Architecture](https://img.shields.io/badge/architecture-SNPA-00B894)](ARCHITECTURE.md)
+[![SSOT](https://img.shields.io/badge/SSOT-Markdown%20%2B%20Natural%20Language-000000)](#-what-is-scpe)
+[![Versioning](https://img.shields.io/badge/versioning-git%20tags-success)](#-versions)
 
-**[O que é](#-o-que-é-scpe) • [Por que existe](#-por-que-o-scpe-existe) • [Pilares](#-os-pilares) • [Comece agora](#-comece-agora) • [Pipeline](#-o-pipeline-em-onda) • [Arquitetura](#-arquitetura-snpa) • [Protocolo](#-protocolo-adp) • [FAQ](#-faq) • [Versões](#-versões)**
-
----
-
-## 🤔 O que é SCPE?
-
-**SCPE (Spec-Compiled Product Engineering)** parte de uma aposta simples: se um agente de IA já escreve código com qualidade competitiva, o gargalo de um time deixou de ser "escrever sintaxe" e passou a ser **especificar intenção de negócio com precisão suficiente para que um agente a compile em software**.
-
-Neste framework:
-
-* A documentação viva, em **Markdown e linguagem natural**, é o **contrato imutável** e a única fonte da verdade (SSOT) — não um artefato acessório que fica desatualizado no primeiro sprint.
-* O código em `apps/` é **gerado como consequência** da especificação, nunca o ponto de partida do trabalho.
-* Motores de execução autônomos — qualquer agente capaz de ler Markdown e escrever código — compilam essa especificação em produtos reais, seguindo um protocolo operacional auditável, não um prompt solto no chat.
-
-Isso não é *prompt engineering* disfarçado de metodologia. É um método de engenharia de produto — com arquitetura, máquina de estados e papéis definidos — que trata a especificação com o mesmo rigor que hoje tratamos código.
+**[What is SCPE](#-what-is-scpe) • [Why it exists](#-why-scpe-exists) • [Pillars](#-the-pillars) • [Get Started](#-get-started) • [Wave Pipeline](#-the-wave-pipeline) • [Architecture](#-architecture-snpa) • [Protocol](#-protocol-adp) • [FAQ](#-faq) • [Versions](#-versions)**
 
 ---
 
-## 🌍 Por que o SCPE existe
+## 🤔 What is SCPE?
 
-O movimento de **Spec-Driven Development (SDD)** já tem referências abertas — [GitHub Spec-Kit](https://github.com/github/spec-kit), OpenSpec/SpecDD, [The SDD Standard](https://github.com/mmanzini/Spec-driven-development). O SCPE não compete com esse ecossistema: ele assume uma posição específica dentro dele.
+**SCPE (Spec-Compiled Product Engineering)** starts from a simple premise: if an AI agent can already write code with competitive quality, a team's bottleneck is no longer "writing syntax" — it has shifted to **specifying business intent with sufficient precision for an agent to compile it into software**.
 
-| Framework | Onde ele resolve | Onde o SCPE difere |
+In this framework:
+
+* Living documentation, written purely in **Markdown and natural language**, is the **immutable contract** and single source of truth (SSOT) — not an auxiliary artifact that goes stale in the first sprint.
+* Code in `apps/` is **generated as a consequence** of the specification, never the starting point of work.
+* Autonomous execution engines — any agent capable of reading Markdown and writing code — compile this specification into real products, following an auditable operational protocol, not a loose chat prompt.
+
+This is not *prompt engineering* disguised as a methodology. It is a product engineering method — with defined architecture, state machine, and roles — that treats specifications with the same rigor we treat code today.
+
+---
+
+## 🌍 Why SCPE Exists
+
+The **Spec-Driven Development (SDD)** movement already has open references — [GitHub Spec-Kit](https://github.com/github/spec-kit), OpenSpec/SpecDD, [The SDD Standard](https://github.com/mmanzini/Spec-driven-development). SCPE does not compete with this ecosystem; it occupies a specific position within it.
+
+| Framework | Problem it Solves | Where SCPE Differs |
 |---|---|---|
-| **GitHub Spec-Kit** | Padroniza o ciclo Constituição → Spec → Plan → Tasks → Implementação | SCPE isola o *workspace* por produto inteiro e formaliza o `app_liquid.md` como manifesto de cada app — a unidade é o produto, não um repositório de código isolado |
-| **OpenSpec / SpecDD** | Formatos de arquivo e pastas de governança contra alucinação de contexto | SCPE amarra a especificação a um **protocolo de estados** (`Draft → Ready → WIP → Done → Stale`) executável por um agente sem margem de interpretação |
-| **The SDD Standard** | Templates de Product Briefs, Steering Docs, Feature Specs | SCPE assume DDD conceitual — linguagem ubíqua, bounded contexts, invariantes — como o vocabulário de modelagem, não apenas o formato do arquivo |
+| **GitHub Spec-Kit** | Standardizes the Constitution → Spec → Plan → Tasks → Implementation cycle | SCPE isolates the *workspace* per entire product and formalizes `app_liquid.md` as each app's manifest — the unit is the product, not an isolated code repository |
+| **OpenSpec / SpecDD** | File formats and governance folders against context hallucination | SCPE binds the specification to a **state protocol** (`Draft → Ready → WIP → Done → Stale`) executable by an agent without ambiguity |
+| **The SDD Standard** | Templates for Product Briefs, Steering Docs, Feature Specs | SCPE adopts conceptual DDD — ubiquitous language, bounded contexts, invariants — as the modeling vocabulary, not merely the file format |
 
-**A linha do SCPE:** especificação não é *sobre* o código — ela **é** o produto. O código é a compilação.
-
----
-
-## 🧭 Os Pilares
-
-- 🔎 **Incremental Feature Discovery** — nada de mapear o sistema inteiro do zero. O time constrói a visão macro da feature mais importante para o negócio *agora*, aprende com a entrega real, e itera.
-- 🏗️ **Spec-Native Product Architecture (SNPA)** — isolamento absoluto de workspace por produto e manifestos universais (`app_liquid.md`) para cada aplicação em `apps/`.
-- 🤖 **Autonomous Development Protocol (ADP)** — pipeline em onda (Upstream → Readiness Gate → Downstream → Auditoria), com máquina de estados formal por épico.
-- 🧑‍💻 **Desenvolvedor Universal** — PMs, designers, staff engineers e especialistas de negócio são todos "desenvolvedores": todos modelam intenção, ninguém apenas "passa requisito" adiante.
-- 🧩 **DDD como linguagem, não como ritual** — linguagem ubíqua, bounded contexts e invariantes guiam a modelagem conceitual antes de existir uma linha de código.
+**SCPE's bottom line:** Specification is not *about* the code — it **is** the product. Code is the compilation.
 
 ---
 
-## 🚀 Comece agora
+## 🧭 The Pillars
 
-Não existe instalador — o SCPE é uma especificação, não um pacote. Adotar o método é estruturar o workspace do seu produto assim:
+- 🔎 **Incremental Feature Discovery** — No mapping the entire system from scratch. The team builds the macro vision of the most critical feature for the business *now*, learns from real delivery, and iterates.
+- 🏗️ **Spec-Native Product Architecture (SNPA)** — Absolute workspace isolation per product and universal manifests (`app_liquid.md`) for each application in `apps/`.
+- 🤖 **Autonomous Development Protocol (ADP)** — Wave pipeline (Upstream → Readiness Gate → Downstream → Audit), with a formal state machine per epic.
+- 🧑‍💻 **Universal Developer** — PMs, designers, staff engineers, and domain experts are all "developers": everyone models intent; no one merely "hands off requirements".
+- 🧩 **DDD as a Language, Not a Ritual** — Ubiquitous language, bounded contexts, and invariants guide conceptual modeling before a single line of code exists.
+
+---
+
+## 🚀 Get Started
+
+There is no installer — SCPE is a specification, not a package. Adopting the method means structuring your product workspace like this:
 
 ```bash
-# 1. Crie o workspace isolado do seu produto (um workspace por produto, sempre)
-mkdir -p ~/product_design/meuproduto/{apps,features,assets}
-cd ~/product_design/meuproduto
+# 1. Create the isolated workspace for your product (one workspace per product, always)
+mkdir -p ~/product_design/myproduct/{apps,features,assets}
+cd ~/product_design/myproduct
 
-# 2. Crie os arquivos de contexto base — a raiz do produto
+# 2. Create the baseline context files — the product root
 touch index.md product_vision.md roadmap.md glossary.md \
       architecture.md techinal_deal.md team_playbook.md quick_status.md
 ```
 
-Depois:
+Then:
 
-1. Leia o **[documento mestre](SCPE_METHOD.md)** — o manifesto completo do método.
-2. Preencha `product_vision.md` e `glossary.md` em conjunto com seu agente de IA — esse é o **Upstream**.
-3. Abra a primeira feature em `features/<nome>/index.md` e modele o primeiro épico em `plan.md`.
-4. Passe pelo **Readiness Gate** — Tech Lead / FDE valida o modelo e marca o épico `Ready`.
-5. Deixe o **Downstream** compilar: o agente lê `plan.md`, gera `tasks.md`, e escreve código em `apps/`.
+1. Read the **[master document](SCPE_METHOD.md)** — the complete method manifesto.
+2. Fill out `product_vision.md` and `glossary.md` alongside your AI agent — this is the **Upstream**.
+3. Open the first feature in `features/<name>/index.md` and model the first epic in `plan.md`.
+4. Pass through the **Readiness Gate** — Tech Lead / FDE validates the model and marks the epic `Ready`.
+5. Let **Downstream** compile: the agent reads `plan.md`, generates `tasks.md`, and writes code in `apps/`.
 
-Sem instalação. Sem CLI proprietária. Só Markdown, Git, e o agente que o seu time já usa.
+No installation. No proprietary CLI. Just Markdown, Git, and the agent your team already uses.
 
 ---
 
-## 🌊 O Pipeline em Onda
+## 🌊 The Wave Pipeline
 
 ```text
- UPSTREAM               READINESS GATE            DOWNSTREAM                AUDITORIA
+ UPSTREAM               READINESS GATE            DOWNSTREAM                AUDIT
 ┌──────────────┐        ┌───────────────┐        ┌────────────────┐       ┌─────────────────┐
-│ Visão macro  │        │ Tech Lead/FDE │        │ plan.md   →     │       │ quick_status.md │
-│ da feature + │ ─────▶ │ valida o      │ ─────▶ │ tasks.md  →     │ ────▶ │ rastreado em    │
-│ plan.md      │        │ modelo e      │        │ código em       │       │ tempo real      │
-│ (IA copiloto)│        │ marca Ready   │        │ apps/           │       │                 │
+│ Feature      │        │ Tech Lead/FDE │        │ plan.md   →     │       │ quick_status.md │
+│ macro vision │ ─────▶ │ validates     │ ─────▶ │ tasks.md  →     │ ────▶ │ tracked in      │
+│ + plan.md    │        │ model & marks │        │ code in         │       │ real-time       │
+│ (AI copilot) │        │ Ready         │        │ apps/           │       │                 │
 └──────────────┘        └───────────────┘        └────────────────┘       └─────────────────┘
 ```
 
-*Non-waterfall*: as ondas correm de forma concorrente e assíncrona entre features distintas — nunca em cascata única para o produto inteiro.
+*Non-waterfall*: Waves run concurrently and asynchronously across distinct features — never in a single cascade for the entire product.
 
 ---
 
-## 🏛️ Arquitetura: SNPA
+## 🏛️ Architecture: SNPA
 
 ```text
-meuproduto/                    # workspace isolado — um por produto
-├── index.md                   # guia mestre e navegação
-├── product_vision.md          # visão, objetivos de negócio, problema central
-├── glossary.md                # linguagem ubíqua (DDD)
-├── architecture.md            # C4 Model, integrações
-├── quick_status.md            # painel de controle global
-├── apps/                      # código gerado — consequência, não ponto de partida
+myproduct/                     # isolated workspace — one per product
+├── index.md                   # master guide and navigation
+├── product_vision.md          # vision, business goals, core problem
+├── glossary.md                # ubiquitous language (DDD)
+├── architecture.md            # C4 Model, integrations
+├── quick_status.md            # global control panel
+├── apps/                      # generated code — consequence, not starting point
 │   └── api-core/
-│       ├── app_liquid.md      # manifesto universal da aplicação
+│       ├── app_liquid.md      # universal application manifest
 │       └── src/...
-└── features/                  # ciclo de desenvolvimento por domínio
+└── features/                  # development cycle sliced by domain
     └── checkout/
         ├── index.md
         └── epics/
-            └── pagamento-pix/
-                ├── plan.md          # DDD conceitual do épico
-                ├── tasks.md         # fila de tarefas atômicas
-                └── quick_status.md  # estado do épico
+            └── pix-payment/
+                ├── plan.md          # conceptual DDD of the epic
+                ├── tasks.md         # atomic task queue
+                └── quick_status.md  # epic state
 ```
 
-Especificação completa em **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+Complete specification in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
 ---
 
-## ⚙️ Protocolo: ADP
+## ⚙️ Protocol: ADP
 
-Cada épico é uma máquina de estados explícita — sem estados implícitos, sem ambiguidade para o agente:
+Each epic is an explicit state machine — no implicit states, no ambiguity for the agent:
 
 ```text
 Draft → Ready → WIP → Done
   ↑        ↓      ↓      │
-  └──── Blocked  Stale ◀─┘   (plan.md mudou depois da entrega)
+  └──── Blocked  Stale ◀─┘   (plan.md changed after delivery)
            │        │
-           └───→ (retorna a Ready após resolução)
+           └───→ (returns to Ready after resolution)
 ```
 
-- **`Draft`** — em modelagem, ainda não validado.
-- **`Ready`** — aprovado no Readiness Gate.
-- **`WIP`** — em execução por um motor autônomo.
-- **`Blocked`** — dependência externa ou defeito interrompeu a execução.
-- **`Done`** — código corresponde ao plano vigente.
-- **`Stale`** — o plano mudou depois da entrega; reentra no Readiness Gate antes de qualquer nova execução.
+- **`Draft`** — in modeling, not yet validated.
+- **`Ready`** — approved at the Readiness Gate.
+- **`WIP`** — currently being executed by an autonomous engine.
+- **`Blocked`** — external dependency or defect interrupted execution.
+- **`Done`** — code matches the current plan.
+- **`Stale`** — plan changed after delivery; re-enters Readiness Gate before any new execution.
 
-Isso é o que torna "documentação como fonte única da verdade" uma propriedade **ativamente mantida**, não uma aspiração de slide. Detalhes completos em **[SCPE_METHOD.md](SCPE_METHOD.md#4-protocolo-autonomous-development-protocol-adp)** e **[ADP_SPEC.md](ADP_SPEC.md)**.
+This is what makes "documentation as single source of truth" an **actively maintained** property, not slide aspiration. Full details in **[SCPE_METHOD.md](SCPE_METHOD.md#4-protocol-autonomous-development-protocol-adp)** and **[ADP_SPEC.md](ADP_SPEC.md)**.
 
 ---
 
 ## ❓ FAQ
 
-**O SCPE substitui Clean Architecture, DDD, SOLID?**
-Não — ele os pressupõe. SCPE decide *quando* e *por quem* a intenção é especificada; o código gerado em `apps/` segue os padrões técnicos que o `techinal_deal.md` do produto definir.
+**Does SCPE replace Clean Architecture, DDD, SOLID?**
+No — it presupposes them. SCPE determines *when* and *by whom* intent is specified; generated code in `apps/` follows whatever technical standards the product's `techinal_deal.md` defines.
 
-**Preciso de uma ferramenta específica para adotar o SCPE?**
-Não. O método é agnóstico de motor de execução: qualquer agente de IA capaz de ler Markdown e escrever código serve como Downstream.
+**Do I need a specific tool to adopt SCPE?**
+No. The method is execution-engine agnostic: any AI agent capable of reading Markdown and writing code works as Downstream.
 
-**O que acontece se eu mudar `plan.md` depois que o épico já foi entregue?**
-Isso é tratado formalmente: o épico transiciona para `Stale` e reentra no Readiness Gate — não vira dívida técnica implícita e silenciosa.
+**What happens if I change `plan.md` after the epic is already delivered?**
+This is handled formally: the epic transitions to `Stale` and re-enters the Readiness Gate — it does not become silent, implicit technical debt.
 
-**O SCPE funciona com múltiplos repositórios de código por produto?**
-Sim, via `repo_pointer.md`: o `app_manifest.md` permanece no workspace do produto, apontando para o repositório físico externo onde o código realmente vive.
+**Does SCPE work with multiple code repositories per product?**
+Yes, via `repo_pointer.md`: the `app_manifest.md` stays in the product workspace, pointing to the external physical repository where code actually lives.
 
-**Isso só serve para times que já usam IA pesadamente?**
-É desenhado para esse cenário, mas o núcleo — documentação viva como contrato, DDD conceitual, protocolo de estados — vale mesmo antes de existir um agente autônomo rodando o Downstream.
+**Is this only for teams already using AI heavily?**
+It is designed for that scenario, but the core — living documentation as contract, conceptual DDD, state protocol — holds true even before an autonomous agent runs Downstream.
 
 ---
 
-## 🗺️ Mapa do Repositório
+## 🗺️ Repository Map
 
-| Arquivo | Papel |
+| File | Role |
 |---|---|
-| [`SCPE_METHOD.md`](SCPE_METHOD.md) | Documento mestre — a especificação completa e vigente do método |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Spec-Native Product Architecture (SNPA), versão resumida |
-| [`ADP_SPEC.md`](ADP_SPEC.md) | Autonomous Development Protocol, versão resumida |
-| [`METHODOLOGY.md`](METHODOLOGY.md) | Princípios invioláveis, versão condensada |
+| [`SCPE_METHOD.md`](SCPE_METHOD.md) | Master document — complete and active method specification |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Spec-Native Product Architecture (SNPA), summary version |
+| [`ADP_SPEC.md`](ADP_SPEC.md) | Autonomous Development Protocol (ADP), summary version |
+| [`METHODOLOGY.md`](METHODOLOGY.md) | Inviolable principles, condensed version |
 
 ---
 
-## 🏷️ Versões
+## 🏷️ Versions
 
-Existe **um único arquivo** de método (`SCPE_METHOD.md`) — sempre a especificação vigente. O histórico de versões vive no Git, como qualquer código:
+There is **a single method file** (`SCPE_METHOD.md`) — always the current specification. Version history lives in Git, just like code:
 
 ```bash
-git tag                                    # lista as versões publicadas
-git show v0.2.7:SCPE_METHOD_v0.2.7.md      # lê o conteúdo de uma versão específica
-git log --oneline v0.1.0..v0.3.0           # vê o que mudou entre duas versões
+git tag                                    # list published versions
+git show v0.2.7:SCPE_METHOD_v0.2.7.md      # inspect a specific past version
+git log --oneline v0.1.0..v0.3.0           # view changes between versions
 ```
 
-| Tag | O que marca |
+| Tag | Significance |
 |---|---|
-| `v0.1.0` | Princípios iniciais — Spec-First Inversion, DDD conceitual, entregas incrementais |
-| `v0.2.7` | Consolidação de SNPA + ADP, modelo Tandem, `app_liquid.md` como manifesto universal |
-| `v0.3.0` | Máquina de estados do épico, protocolo de spec drift (`Stale`), suporte a multi-repositório |
+| `v0.1.0` | Initial principles — Spec-First Inversion, conceptual DDD, incremental deliveries |
+| `v0.2.7` | Consolidation of SNPA + ADP, Tandem model, `app_liquid.md` as universal manifest |
+| `v0.3.0` | Epic state machine, spec drift protocol (`Stale`), multi-repository support |
 
-Como o arquivo já se chamou `SCPE_METHOD_v0.1.0.md` e `SCPE_METHOD_v0.2.7.md` em versões passadas antes de ser unificado, use o caminho correspondente à tag ao inspecionar o histórico (ex.: `git show v0.1.0:SCPE_METHOD_v0.1.0.md`).
-
----
-
-## 🤝 Contribuindo
-
-Este é um método vivo — assim como a documentação que ele preconiza. Discordâncias, lacunas encontradas na prática e propostas de mudança seguem o mesmo princípio do método: escreva a intenção em Markdown, abra a discussão, deixe o consenso virar commit — e, quando for o caso, uma nova tag.
+Since the file was named `SCPE_METHOD_v0.1.0.md` and `SCPE_METHOD_v0.2.7.md` in past versions before being consolidated, use the corresponding path for the tag when inspecting history (e.g., `git show v0.1.0:SCPE_METHOD_v0.1.0.md`).
 
 ---
 
-<p align="center">Feito por quem acredita que a especificação — não o código — é o ativo que dura.</p>
+## 🤝 Contributing
+
+This is a living method — just like the documentation it advocates. Disagreements, gaps found in practice, and change proposals follow the method's own principle: write the intent in Markdown, open the discussion, let consensus become a commit — and, when appropriate, a new tag.
+
+---
+
+<p align="center">Made by those who believe specification — not code — is the asset that endures.</p>
+
