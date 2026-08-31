@@ -173,26 +173,6 @@ It is designed for that scenario, but the core — living documentation as contr
 
 ---
 
-## 🏷️ Versions
-
-There is **a single method file** (`SCPE_METHOD.md`) — always the current specification. Version history lives in Git, just like code:
-
-```bash
-git tag                                    # list published versions
-git show v0.2.7:SCPE_METHOD_v0.2.7.md      # inspect a specific past version
-git log --oneline v0.1.0..v0.3.0           # view changes between versions
-```
-
-| Tag | Significance |
-|---|---|
-| `v0.1.0` | Initial principles — Spec-First Inversion, conceptual DDD, incremental deliveries |
-| `v0.2.7` | Consolidation of SNPA + ADP, Tandem model, `app_liquid.md` as universal manifest |
-| `v0.3.0` | Epic state machine, spec drift protocol (`Stale`), multi-repository support |
-
-Since the file was named `SCPE_METHOD_v0.1.0.md` and `SCPE_METHOD_v0.2.7.md` in past versions before being consolidated, use the corresponding path for the tag when inspecting history (e.g., `git show v0.1.0:SCPE_METHOD_v0.1.0.md`).
-
----
-
 ## 🤝 Contributing
 
 This is a living method — just like the documentation it advocates. Disagreements, gaps found in practice, and change proposals follow the method's own principle: write the intent in Markdown, open the discussion, let consensus become a commit — and, when appropriate, a new tag.
