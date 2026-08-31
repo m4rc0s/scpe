@@ -1,7 +1,7 @@
-# Spec-Native Product Architecture (SNPA v0.2.7)
+# Spec-Native Product Architecture (SNPA)
 
 ## 1. Visão Geral
-A **Spec-Native Product Architecture (SNPA)** define a topologia estrutural, física e estática do ecossistema de um produto dentro do framework **SCPE (v0.2.7)**.
+A **Spec-Native Product Architecture (SNPA)** define a topologia estrutural, física e estática do ecossistema de um produto dentro do framework **SCPE**.
 
 ## 2. Isolamento por Workspace & Repositório Invertido
 * **Workspace Isolado:** `$HOME/product_design/<nome_do_produto>/` (um contêiner dedicado por produto para eliminar alucinações de contexto).
