@@ -1,231 +1,388 @@
-# Spec-Compiled Product Engineering (SCPE)
+# SCPE — Spec-Compiled Product Engineering
 
-> **A Spec-Native Product Architecture (SNPA) framework, operated by the Autonomous Development Protocol (ADP), grounded in incremental domain discovery, collaborative modeling of business intent, and formal traceability between specification and implementation.**
+> Define the product in plain Markdown. Change it only through reviewed changes. Let agents compile each change into working software, and check the result against the examples written in the spec.
 
----
-
-## 📋 Executive Summary & Manifesto
-
-Artificial Intelligence has arrived and revolutionized software engineering and, consequently, the development of products built with software, automating syntax creation with proven quality that often surpasses that of experienced developers.
-
-In this methodology, living documentation — structured purely in **Markdown and natural language** — is established as the immutable contract and the single source of truth (SSOT).
-
-The framework is grounded in fundamental pillars:
-
-* **Incremental Feature Discovery (Macro Vision and Iterative Delivery):** The focus is not attempting to map or discover an entire system from scratch, but rather collaboratively building the macro vision of the most critical feature for the business at that moment. We embrace incremental development, continuous learning through practice, iterative delivery, risk mitigation, and the ability to fail early and pivot quickly.
-* **Spec-Native Product Architecture (SNPA):** Workspace isolation per product and universal application manifests (`app_liquid.md`) to manage the physical layer in `apps/`.
-* **Autonomous Development Protocol (ADP):** The operational protocol ensuring autonomous engines and agents execute downstream in a standardized, asynchronous, wave-based manner — with formal traceability between the specification and what was actually implemented.
-
-### Why Standardize Documentation in Markdown and Natural Language?
-
-Adopting pure Markdown and natural language files offers unmatched flexibility and clarity for AI-driven teams and ecosystems:
-
-* **Universal Readability (Humans and AIs):** Anyone on the team (technical or business) can read, audit, and collaborate without friction, while AI agents process the context seamlessly.
-* **Flawless Version Control:** Git manages clean and linear diffs, allowing teams to track the evolution of business intent and architecture over time.
-* **Tooling Independence:** The specification belongs to the product repository, keeping the single source of truth independent of proprietary platforms.
+The key words **MUST**, **MUST NOT**, **SHOULD** and **MAY** are used as in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 ---
 
-## 0. The Global Spec-Driven Development (SDD) Ecosystem and Our Differentiators
+## 1. The Idea
 
-The **Spec-Driven Development (SDD)** and **Spec-First** movement forms the vanguard of agent-guided software engineering today, finding parallels in open initiatives across the global tech community:
+AI agents made implementation cheap. What is still expensive — and now the real bottleneck — is knowing, precisely and in writing, **what the product is** and **what should change next**. An agent amplifies whatever understanding it is given, including none.
 
-* **GitHub Spec-Kit (`github/spec-kit`):** The reference project standardizing the Constitution → Specification → Planning → Tasks → Implementation cycle across multi-agent platforms.
-* **OpenSpec / SpecDD (`specdd.ai`):** The community movement focused on standardized specification file formats and governance directories to mitigate AI context hallucinations.
-* **The SDD Standard (`mmanzini/Spec-driven-development`):** Open repositories formalizing templates for Product Briefs, Steering Docs, and Feature Specs.
+SCPE is a small standard for writing that understanding down and a simple loop for evolving it. The spec is the source; code is what you get when an agent *compiles* a change to the spec.
 
-### Inviolable Aspects and Practices Highlighted by this Method:
+It has three parts:
 
-* **Absolute Workspace Isolation (Container per Product):** Protects against context hallucinations by strictly restricting the agent's operational scope to the active product folder.
-* **Product Repository Inversion:** Historically, we cloned the source code of isolated microservices. Now, we clone the entire **Product**, where structured documentation empowers AI agents to work efficiently, and code is a subordinate asset used to validate, execute, test, and deploy.
-* **Structural Hierarchy `Product → Apps`:** The product centralizes everything clearly: `Product → Apps → {AppBackend, Client, etc.}`.
-* **Technical Excellence in Implementation (`apps/`):** Generated code rigorously applies established industry standards (**S.O.L.I.D., Clean Architecture, Hexagonal Architecture, Ports and Adapters, Design Patterns, and MVC**).
-* **Native Application Manifest (`app_liquid.md`):** A universal, agnostic Markdown descriptor that instantly gives the agent the responsibilities, ecosystem, and boundaries of each piece of software inside `apps/`.
+| Part | Folder | Answers |
+|---|---|---|
+| **The product spec** | `spec/` | What is the product, right now? |
+| **Changes** | `changes/` | What should become true next, and why? |
+| **Apps** | `apps/` | What software implements it? |
 
----
-
-**Strategic Vision:** Source code, which historically consumed the lion's share of a team's engineering effort, is now generated by agents with impressive agility and rigorously inspected and governed by developers. Because writing code happens much faster and more fluidly, time-to-solution drops dramatically. Furthermore, generated code incorporates the robustness of industry-standard best practices, ensuring long-term maintainability, testability, and scalability.
+Everything is Markdown with a small YAML header, versioned in Git. No platform, no proprietary tool.
 
 ---
 
-## 1. The New Paradigm of Domain-Driven Design (DDD) and the Universal Role of the "Developer"
+## 2. Principles
 
-When Eric Evans wrote his classic book on Domain-Driven Design, his foundational premise was not about how to map tables in a database, but that **the heart of software lies in its ability to solve problems related to the user's domain**. By removing the mechanical technical implementation barrier (now delegated to AI), we apply DDD in its purest form: relentless focus on the business.
-
-In this revolutionary landscape, **the term "Developer" takes on a universal meaning**. Everyone involved in product conception (Product Managers, Designers, Engineering Managers, Staff Engineers, or domain experts) is a Developer.
-
-In true multidisciplinary synergy, the team operates in an orchestrated fashion where each member contributes irreplaceable human expertise. Developers (in the broad sense) drive this collective intelligence, guiding AI agents in iteratively writing plans (`plan.md`), scoping epics (`index.md`), and anchoring these definitions to the team's technical agreements. All of this rich intent is collaboratively documented in `.md` files, creating crystal-clear specifications for the agent to write and structure the final solution.
-
-In human-guided specification, absolute focus is placed on the following conceptual DDD pillars:
-
-* **Ubiquitous Language (The Definitive "Prompt"):** A rich, unified glossary (`glossary.md`) that shields the system from hallucinations. If the business defines that a "Contract" differs from a "Proposal", the AI and the team must use those exact terms.
-* **Bounded Contexts (Autonomous Focus):** Clear boundaries defining where each business rule begins and ends. For the AI, this ensures laser focus on the feature's micro-universe.
-* **Entities and Business Rules (Invariants):** Entities hold unique identities and lifecycles governed by "invariants" — rules that must never be broken.
-* **Domain Events:** Capturing the dynamic flow of reactions and critical state changes across the system (*"When 'Order' is paid, notify 'Shipping'"*).
+1. **A defined product over a queue of tickets.** `spec/` describes what the product *is*. Backlogs, boards and task lists are views of changes — never the source of truth.
+2. **Explicit changes over silent edits.** The spec changes through exactly one mechanism: a Change, approved by a human. Everything else is a proposal.
+3. **Examples over adjectives.** Behaviour is pinned down by concrete *Given / When / Then* scenarios. If you cannot write the example, the decision has not been made yet.
+4. **Links over folders.** Every artifact has a stable ID. Relationships are written as IDs, so people, agents and scripts can all follow them.
+5. **Small vertical slices over big plans.** Specify the most valuable next outcome, ship it end to end, learn from real use, repeat. Do not map the whole system upfront.
+6. **Humans decide, agents build, scripts check.** Anyone can author. An accountable human approves. Agents implement. Deterministic checks verify structure. No agent approves its own work or settles an open product question.
+7. **One repository per product.** You clone the product, not a service. Spec, decisions, changes and app manifests live together, so the agent's context *is* the product's context.
 
 ---
 
-## 2. Architecture: Spec-Native Product Architecture (SNPA)
-
-Organizing the portfolio cleanly in the development environment (e.g., `$HOME/product_design/`), the core principle is absolute isolation: **one dedicated workspace per product**.
-
-### Product Root Anatomy (Isolated Workspace):
+## 3. The Product Repository
 
 ```text
 myproduct/
-├── index.md                 # Master guide to structure, summary, and general navigation
-├── product_vision.md        # Macro vision, business goals, profitability, and core problem
-├── roadmap.md               # Strategic direction and global product milestones
-├── glossary.md              # Ubiquitous Language dictionary (invariant domain terms)
-├── architecture.md          # C4 Model patterns, abstract systemic choices, and integrations
-├── techinal_deal.md         # Technical agreements, AI guardrails, constraints, and approved stack
-├── team_playbook.md         # Rules of engagement, workflow, and team culture
-├── quick_status.md          # Global dynamic control panel of the product
-├── assets/                  # Reference documents, wireframes, and visual assets
-├── apps/                    # Physical asset layer: software built to rigorous engineering standards
-└── features/                # Development lifecycle sliced by domains and functionalities
+├── AGENTS.md            # how people and agents work here: read order, rules, commands
+├── product.md           # why the product exists: problem, users, outcomes, non-goals
+├── spec/                # the product definition — current truth, one artifact per file
+│   ├── actors/
+│   ├── contexts/
+│   ├── terms/
+│   ├── features/
+│   ├── rules/
+│   └── quality/
+├── decisions/           # technical decisions (architecture, stack, patterns)
+├── changes/             # proposed and in-flight changes
+│   └── done/            # accepted changes — the product's history
+└── apps/                # the software
+    └── api-core/
+        ├── app.md       # app manifest
+        └── src/
 ```
+
+**Who may edit what:**
+
+| Path | Holds | Edited by |
+|---|---|---|
+| `product.md`, `spec/**` | The accepted product definition | Only by merging a done Change |
+| `decisions/**` | Technical decisions | New decision per PR; supersede, never rewrite |
+| `changes/*` | Work in flight | Authors and builders, freely, until done |
+| `changes/done/**` | History | Nobody — immutable |
+| `apps/**` | Code and tests | Builders, as part of a Change |
+| `AGENTS.md` | Working agreement | The team, by PR |
+
+Subfolders inside `spec/` are a convenience. An artifact's kind comes from its `type` field, not its path.
 
 ---
 
-## 3. The Application Ecosystem (`apps/`) and Manifest (`app_liquid.md`)
+## 4. The Product Spec
 
-The `apps/` folder houses the physical software generated as a natural consequence of the specification. Each application has its own universal descriptive manifest in Markdown: **`app_liquid.md`**.
+### 4.1 Common Rules
 
-```text
-apps/
-├── api-core/
-│   ├── app_liquid.md        # Application descriptive manifest
-│   └── src/ ...             # Source code generated via Agent (Clean Arch / Hexagonal)
-└── desktop-client/
-    ├── app_liquid.md        # Application descriptive manifest
-    └── src/ ...             # Source code generated via Agent
+Every artifact in `spec/` is one Markdown file with this header:
+
+```yaml
+---
+id: FEAT-PIX-PAYMENT        # stable ID
+type: feature               # actor | context | term | feature | rule | quality
+title: Pay with Pix
+status: active              # draft | active | deprecated | retired
+---
 ```
 
-### Standard `app_liquid.md` Structure:
+- **IDs** are `PREFIX-NAME` in uppercase (`A–Z`, `0–9`, `-`). An ID never changes and is never reused, even after the artifact is retired. The file name is the lowercase ID: `feat-pix-payment.md`.
+- **Outside `spec/`**, the same header is used by changes (`CHG-`), decisions (`DEC-`) and app manifests (`APP-`).
+- **References** between artifacts always use IDs — never paths or titles. A scenario inside a feature is referenced as `FEAT-PIX-PAYMENT#S2`.
+- **Required sections** appear as `##` headings, in the order listed below. Extra sections MAY follow.
+- **No owner, date or version fields.** Git already records who changed what and when.
+- **Product language only.** No class names, tables, endpoints or frameworks, unless they are part of the external contract. Implementation belongs in `decisions/` and `apps/`.
+- **Status:** `draft` (not yet accepted), `active` (part of the product), `deprecated` (scheduled for removal), `retired` (kept for traceability only). An `active` artifact MUST NOT reference a `retired` one.
+
+### 4.2 Artifact Types
+
+| Type | Prefix | Answers | Links (frontmatter) | Required sections |
+|---|---|---|---|---|
+| **actor** | `ACT-` | Who interacts with the product? | `kind`: human, system, scheduled | Goals · Responsibilities · Boundaries |
+| **context** | `CTX-` | Where does a set of words hold one meaning? | — | Responsibility · Boundaries · Integrations |
+| **term** | `TERM-` | What does this word mean here? | `context`, `synonyms` | Definition · Not to Be Confused With · Example |
+| **feature** | `FEAT-` | What outcome does an actor get, and how does it behave? | `actors`, `context`, `rules`, `terms` | Outcome · Flow · Alternatives and Failures · Scenarios · Out of Scope |
+| **rule** | `RULE-` | What must always (or never) be true? | `applies-to`, `terms` | Rule · Why · Examples · Exceptions |
+| **quality** | `QUAL-` | How well must it work, measurably? | `applies-to`, `attribute` | Requirement · Measurement |
+
+This is the whole vocabulary. It is enough for most products; if your domain needs more (for example domain events or regulatory obligations), add a type with the same common rules and document it in `AGENTS.md`.
+
+**Why these six:** actors, contexts and terms are the *ubiquitous language* of Domain-Driven Design; rules are its *invariants*; features carry behaviour and the examples that verify it; quality holds measurable non-functional requirements. Ready-to-copy templates are in [`templates/`](templates/).
+
+### 4.3 Features and Scenarios
+
+The feature is the centre of the spec. Its scenarios are the acceptance criteria that agents implement and tests check.
 
 ```markdown
-# App Manifest: api-core
+---
+id: FEAT-PIX-PAYMENT
+type: feature
+title: Pay with Pix
+status: active
+actors: [ACT-CUSTOMER]
+context: CTX-PAYMENTS
+rules: [RULE-PIX-CHARGE-EXPIRY]
+terms: [TERM-ORDER, TERM-PIX-CHARGE]
+---
 
-- **app_name:** api-core
-- **app_type:** backend-rest-api
-- **tech_stack:** Kotlin, Spring Boot, PostgreSQL
-- **design_patterns:** Clean Architecture, Hexagonal (Ports and Adapters), S.O.L.I.D.
-- **app_description:** Core service responsible for transaction processing and financial ledger.
-- **entrypoint:** src/main/kotlin/com/myproduct/Main.kt
-- **dependencies_scope:** Synchronous HTTP communication with client and asynchronous messaging for domain events.
+## Outcome
+A customer pays for an order instantly with Pix, without typing card details.
+
+## Flow
+1. The customer chooses Pix at checkout.
+2. The product creates a Pix charge for the order total and shows its QR code.
+3. The customer pays from their bank app.
+4. The product confirms the payment and marks the order as paid.
+
+## Alternatives and Failures
+- The charge expires before payment → the order stays unpaid and the customer can create a new charge.
+- The bank confirms a different amount → the payment is held for manual review.
+
+## Scenarios
+
+### S1 — Paid order
+- **Given** an order of R$ 120,00 awaiting payment
+- **When** the customer pays the Pix charge for R$ 120,00
+- **Then** the order is marked as paid
+- **And** the customer sees the payment confirmation
+
+### S2 — Expired charge
+- **Given** a Pix charge created 31 minutes ago and not paid
+- **When** the customer opens the order
+- **Then** the charge is shown as expired
+- **And** the customer can create a new charge
+
+## Out of Scope
+Refunds via Pix — a future change.
 ```
+
+Scenario rules:
+
+- Each scenario has a local ID (`S1`, `S2`, …) that never changes. Retired scenarios keep their number; new ones get the next one.
+- One `When` per scenario. Alternatives become separate scenarios, not an `or`.
+- `Then` states what a user or another system can **observe** — not internal state.
+- Every scenario of an `active` feature MUST be covered by at least one test that names its ID.
 
 ---
 
-## 4. Protocol: Autonomous Development Protocol (ADP)
+## 5. Changes
 
-### 4.1. Incremental Feature Discovery (Macro Vision and Iterative Delivery)
-
-The specification process rejects the exhaustive, bureaucratic attempt to map an entire system from start to finish upfront. Instead, the team focuses on building the **macro vision of the most critical feature for the business at that moment**:
-
-* **Continuous Learning and Iteration:** We embrace incremental development ("learn as you build"), validating hypotheses quickly, iterating on real deliveries, and ensuring space to fail early, adjust course, and evolve the product organically.
-* **AI as a Collaborative Co-Pilot:** Strategic team roles leverage agents to rapidly draft and structure the pure intent of the priority feature into standardized text artifacts (`plan.md`).
-
-### 4.2. Feature and Epic Lifecycle and the Standardization of `index.md`
-
-Agile management happens natively in the directory tree. We standardize **`index.md`** as the universal entry point for parsers and AI-oriented IDEs.
+A **Change** is the only way the product definition evolves, and the unit of work that agents build. It replaces the feature/epic/plan/tasks/status split with **one folder and one file**.
 
 ```text
-features/
-└── [feature_name]/
-    ├── index.md             # Feature overview, business scope, and value
-    ├── feat_roadmap.md      # Feature timeline milestones
-    ├── quick_status.md      # Current local status (see state machine in 4.4)
-    └── epics/               # Breakdown of the feature into atomic packages
-        └── [epic_name]/
-            ├── index.md         # Detailed Epic scope and Bounded Contexts
-            ├── plan.md          # Domain Enabler: Conceptual DDD structured for incremental delivery
-            ├── tasks.md         # Atomic Task Queue for Agent execution
-            ├── quick_status.md  # Local audit trail and progress status
-            └── epic_roadmap.md  # Tactical execution planning
+changes/chg-pix-payment/
+├── change.md                         # intent, scope, slices, log
+└── spec/                             # complete future version of every added/modified artifact
+    ├── features/feat-pix-payment.md
+    ├── rules/rule-pix-charge-expiry.md
+    └── terms/term-pix-charge.md
 ```
 
-#### 4.2.1. Planning Guidance: Vertical Slicing (Optional Recommendation)
+### 5.1 `change.md`
 
-When breaking down a feature into epics, and an epic into atomic tasks (`tasks.md`), the way work is sliced dictates when the user actually receives real value — and consequently, when the team starts learning from real usage (Section 4.1).
+```markdown
+---
+id: CHG-PIX-PAYMENT
+type: change
+title: Accept Pix at checkout
+status: building          # draft | ready | building | blocked | done | dropped
+add: [FEAT-PIX-PAYMENT, RULE-PIX-CHARGE-EXPIRY, TERM-PIX-CHARGE]
+modify: [FEAT-CHECKOUT]
+remove: []
+apps: [api-core, web-checkout]
+---
 
-* **Horizontal Slicing:** Organizes work by technical layer — first all the data models, then the entire API, then the whole UI. The product only delivers observable value when all layers converge, postponing hypothesis validation and continuous learning.
-* **Vertical Slicing (recommended default of the method):** Each epic — and whenever possible, each task in `tasks.md` — cuts across all necessary layers (data, domain, API, UI) to deliver, even if minimally, a tangible increment of value to the user from the very first epic (moment zero). Each vertical slice is an immediate opportunity to validate hypotheses, learn, and pivot — directly reinforcing the Incremental Feature Discovery pillar.
+## Problem
+38% of abandoned checkouts happen on the card form. Customers ask for Pix.
 
-**Optional Nature:** This is a recommended guideline, not an invariant of the method. The team (Tech Lead / FDE at the Readiness Gate) may choose a different slicing strategy whenever technical or business contexts justify it — for instance, an infrastructure migration or a data-layer rewrite that inherently provides no vertically sliceable user-perceptible value. When opting out of vertical slicing, this decision and its rationale must be documented in `plan.md` or `epic_roadmap.md`, preserving documentation as the source of truth for planning decisions as well.
+## Intended Outcome
+Customers can pay with Pix. We expect checkout abandonment to fall below 25%.
 
-### 4.3. The Wave Pipeline (Non-Waterfall Workflow)
+## Slices
 
-ADP rejects waterfall workflows. Work flows concurrently, continuously, and asynchronously across interconnected phases:
+### Slice 1 — Pay an order with Pix (FEAT-PIX-PAYMENT#S1)
+- [x] Create Pix charge for an order
+- [x] Show QR code at checkout
+- [ ] Confirm payment from bank webhook and mark order paid
 
-1. **Upstream (Incremental Feature Discovery & Strategic Alignment):** The team aligns on the current business priority, drafting the macro vision of the most critical feature and using agents as co-pilots to structure `plan.md`.
-2. **Readiness Gate (Technical Validation):** The Tech Lead / FDE validates conceptual model consistency, ensures architectural alignment, and sets the status to `Ready`.
-3. **Downstream (Standardized Execution / Code as Consequence):** With the plan approved, the agent translates `plan.md` into atomic tasks in `tasks.md`. Autonomous engines execute the queue iteratively, placing generated code in `apps/` alongside the respective `app_liquid.md`.
-4. **Continuous Audit:** Progress, practical learnings, and blockers are tracked in real-time within `quick_status.md` files.
+### Slice 2 — Expired charges (FEAT-PIX-PAYMENT#S2, RULE-PIX-CHARGE-EXPIRY)
+- [ ] Expire unpaid charges after 30 minutes
+- [ ] Let the customer create a new charge
 
-### 4.4. Epic State Machine
+## Open Questions
+- Should we hold amounts that differ by less than R$ 0,01? (Finance)
 
-`quick_status.md`, at the epic level, declares exactly one of these states — no other value is valid:
+## Out of Scope
+Pix refunds.
+
+## Log
+- 2026-09-20 — Slice 1 in review. Bank sandbox rejects amounts with 3 decimals; confirmed with provider, no spec impact.
+
+## Outcome Check
+_Filled after release: did abandonment fall? What did we learn? Which new changes does it suggest?_
+```
+
+**Slices** are vertical by default: each one cuts across data, logic, interface and API to deliver something a user can observe, and names the scenarios it makes pass. Tasks are plain checklists under each slice; the builder (agent or human) writes them when work starts. If a slice cannot be vertical — an infrastructure migration, for example — say so and why in the slice.
+
+**Size:** if a change cannot be done in about a week, split it. Small changes ship, get used, and teach you something sooner.
+
+### 5.2 Lifecycle
 
 ```text
-Draft → Ready → WIP → Done
-  ↑        ↓      ↓
-  └──── Blocked  Stale
-           │        │
-           └───→ (returns to Ready after resolution)
+ draft ──approve──▶ ready ──start──▶ building ──merge──▶ done
+   │                  ▲                  │
+   ▼                  └──── blocked ◀────┘
+ dropped
 ```
 
-- **`Draft`** — in modeling during Upstream; `plan.md` not yet submitted to the Readiness Gate.
-- **`Ready`** — approved at the Readiness Gate; eligible for Downstream execution.
-- **`WIP`** — actively being executed by an autonomous engine.
-- **`Blocked`** — execution interrupted due to external dependencies or discovered defects; returns to `Ready` when the blocker is resolved, does not proceed autonomously.
-- **`Done`** — code in `apps/` matches the active `plan.md` at the time of delivery.
-- **`Stale`** — a `Done` epic whose `plan.md` was modified post-delivery automatically transitions to this state (see 4.5). Only a new Readiness Gate cycle returns the epic to `Ready`.
+| Status | Meaning | Set by |
+|---|---|---|
+| `draft` | Being written and discussed | Author |
+| `ready` | Approved: this is what we want, and it can be built | Accountable human (the approver) |
+| `building` | An agent or person is implementing it | Builder |
+| `blocked` | Stopped by an external dependency, a defect, or a spec question found while building | Builder |
+| `done` | Merged: code, tests and updated spec are on the main branch | Human reviewer, by merging |
+| `dropped` | Abandoned; kept for the record | Author or approver |
 
-Transitions are written exclusively by the actor performing the action that causes them (Tandem moves `Draft → Ready` via Gate; autonomous engine moves `Ready → WIP → Done`; any edit to `plan.md` moves `Done → Stale` automatically). This makes the protocol unambiguous and executable by an agent.
+### 5.3 Rules
 
-### 4.5. Spec Drift Protocol
+1. A change lists every artifact it adds, modifies or removes, and carries the **complete future version** of each one under its own `spec/` folder.
+2. To become `ready`, a change MUST have: every added or modified feature with scenarios, no open question that blocks building, and the affected `apps` listed.
+3. If building shows the spec is wrong, the builder MUST NOT quietly adapt. It records the finding in the Log, sets `blocked`, and the approver re-approves the corrected proposal.
+4. A change is `done` when one pull request merges: the code, tests naming each covered scenario, the proposed files moved into `spec/`, and the change folder moved to `changes/done/`.
+5. A `done` change is history and MUST NOT be edited. Corrections are new changes.
+6. Two changes that are not done MUST NOT modify or remove the same artifact. The second one waits, or is rebased after the first is done.
 
-**Rule:** No commit to `plan.md` on an epic in `Done` state is silent.
-
-Upon detecting a modification to `plan.md` whose epic is `Done`, the state transitions to `Stale` and the epic re-enters the Readiness Gate queue — not the Upstream queue, because the model was already validated once; what requires re-validation now is the *diff* between the old and new model, not the entire model.
-
-The Tech Lead, at the Readiness Gate, evaluates the difference and decides between two actions, recorded in `epic_roadmap.md`:
-
-- **Re-execution** — the change affects previously implemented behavior; the epic returns to `Ready` and a new Downstream cycle regenerates the affected parts of `apps/`.
-- **Documented drift acceptance** — the change is cosmetic or does not affect implemented behavior; the Tech Lead marks the epic `Done` again, explicitly documenting why the divergence between `plan.md` and `apps/` is acceptable.
-
-This ensures that "documentation as single source of truth" is not an aspirational statement, but an actively maintained property that the protocol enforces or declares violated — never leaving the violation implicit.
-
-### 4.6. Multi-Repository Applications
-
-When an `app` in `apps/` resides in a physical repository separate from the product workspace, `app_manifest.md` remains inside `apps/<app>/` — the specification never leaves the isolated workspace — but the source code is replaced by a pointer:
-
-```text
-apps/
-└── api-core/
-    ├── app_manifest.md      # Remains inside the product workspace
-    └── repo_pointer.md      # Repository URL, integration branch, reference commit
-```
-
-`repo_pointer.md` contains only location metadata — never code. The autonomous engine, when executing Downstream for an epic associated with this app, writes to the referenced external repository, but status (`quick_status.md`) and specification (`plan.md`, `app_manifest.md`) continue to live, without exception, inside the product's isolated workspace (Section 2). What is distributed is the *compilation*, never the *specification* — the isolation principle of Section 2 remains intact.
+Because `spec/` can only change through this path, spec and code cannot silently drift apart. Any divergence is a visible, open change.
 
 ---
 
-## 5. Agent Workflow (Spec-First with Technical Governance)
+## 6. The Loop
 
-* **Base Context:** Collaborative refinement of product root files (`product_vision.md`, `architecture.md`, `techinal_deal.md`), establishing coding guidelines and engineering standards (Clean Arch, S.O.L.I.D., Hexagonal).
-* **Feature Definition:** Scoping the feature via `index.md`, aligning business rules and delivered user value.
-* **Epic Modeling (`plan.md`):** The agent drafts the plan applying conceptual DDD based on context. The engineer reviews and refines pure intent in a lightweight, interactive manner.
-* **Operational Planning (`tasks.md`):** The agent translates the conceptual plan into a clear queue of atomic tasks for code generation.
-* **Agile Generation and Human Inspection (`apps/`):** The agent generates the code structure in minutes. The developer acts as a reviewing architect, ensuring technical excellence, design patterns, and scalability.
-* **Continuous Audit:** Transparent tracking of delivery fluidity and progress across `quick_status.md` files.
+```text
+  PROPOSE  ─▶  APPROVE  ─▶  BUILD  ─▶  VERIFY  ─▶  LEARN
+  (draft)      (ready)      (building)  (done)     (outcome check → new changes)
+     ▲                                                  │
+     └──────────────────────────────────────────────────┘
+```
+
+1. **Propose.** Someone — product manager, designer, engineer, domain expert — opens a change with the problem and intended outcome. An agent helps draft features, rules and scenarios; the author refines them.
+2. **Approve.** An accountable human checks that the change says what the product should do and fits the technical decisions, then sets `ready`. This is a check per change, not a phase for the whole product.
+3. **Build.** An agent reads the change, the artifacts it cites, the app manifests and the decisions; writes the tasks; implements slice by slice.
+4. **Verify.** Tests named after scenarios pass; a human reviews and merges; the spec is updated in the same merge.
+5. **Learn.** After release, the Outcome Check records whether the change worked. Lessons become new changes.
+
+Many changes move through the loop at the same time. There is no product-wide gate.
+
+**Four questions, four kinds of evidence.** A green build does not mean a change is right.
+
+| Question | Answered by | Evidence |
+|---|---|---|
+| Is it well formed? | Checks (Section 9) | CI result |
+| Is it what we want? | Approver | `ready` status and review |
+| Is it built as specified? | Builder and reviewer | Passing tests that name scenario IDs |
+| Did it work? | The team | Outcome Check in the done change |
 
 ---
 
-## Trade-offs Assumed in the State Protocol and Multi-Repository Support
+## 7. Apps
 
-- **State complexity.** Six formal states (Section 4.4) replace four informal states. The cost is more protocol surface for the Tech Lead to audit; the gain is that an agent can implement the state machine without ambiguity.
-- **`Stale` creates mandatory review overhead.** Every edit to `plan.md` post-delivery forces a pass through the Readiness Gate, even when trivial. This is deliberate: the cost of an unnecessary review is far lower than the cost of undetected drift between specification and production code.
-- **`repo_pointer.md` introduces a second source of truth for code location.** The pointer can become outdated if the repository is migrated without updating the manifest. This risk is accepted because the alternative — embedding code from multiple repositories within the product workspace — breaks the isolation that is the foundational principle of Section 2. An automated verification mechanism for pointers remains outside the current scope of the method.
+Each app in `apps/` has an `app.md` manifest so an agent knows immediately what it is, what it owns, and how to run it.
+
+```markdown
+---
+id: APP-API-CORE
+type: app
+title: api-core
+kind: backend-api
+stack: [Kotlin, Spring Boot, PostgreSQL]
+contexts: [CTX-PAYMENTS, CTX-ORDERS]
+repo: https://github.com/acme/api-core   # only if the code lives in another repository
+revision: 3f2a91c                         # commit the product last built against
+---
+
+## Responsibility
+Order lifecycle and payment processing.
+
+## Boundaries
+Does not render UI. Does not store card data.
+
+## Interfaces
+REST API for web and mobile clients; publishes `OrderPaid` events.
+
+## Run and Test
+`./gradlew test` — tests are named after scenario IDs.
+```
+
+When the code lives in another repository, `apps/<app>/` holds only `app.md`; the spec and changes still live in the product repository. `revision` MUST be a commit, not a branch.
+
+Code standards (Clean Architecture, hexagonal, SOLID, and so on) are **product choices, not method rules**. Record them in `decisions/`.
+
+**Decisions** (`decisions/DEC-0001-*.md`) are short architecture decision records with `id`, `type: decision`, `title`, `status` (`proposed | accepted | superseded`), optional `supersedes`, and the sections Context · Decision · Consequences.
+
+---
+
+## 8. Working with Agents
+
+- **`AGENTS.md`** at the root is the entry point for every agent session: what to read first, the rules below, and the commands to build and test.
+- **Minimum context for a task** is the change file, the artifacts its IDs point to, the relevant `app.md` files and the accepted decisions. IDs make that context easy to collect — and keep it small.
+- **Tests name scenario IDs**, for example `test("FEAT-PIX-PAYMENT#S2 expired charge can be recreated")`. This is the traceability link from spec to code.
+- **Agents may draft anything and approve nothing.** They do not set `ready`, merge, or close open questions.
+- **Specialist review passes are optional.** A change can be reviewed by agents playing focused roles — security, testing, UX, operations — before a human approves or merges it.
+
+---
+
+## 9. Checks
+
+These checks are deterministic: the same files always give the same answer. A script or CI job can run them; SCPE does not require a specific tool.
+
+1. Every artifact has a valid `id`, `type`, `title` and `status`, and its ID prefix matches its type.
+2. IDs are unique across the repository.
+3. Every referenced ID exists, and no `active` artifact references a `retired` one.
+4. Every artifact has its required sections, in order.
+5. Every `add` or `modify` in a change has a matching file under the change's `spec/` folder, and every file there is listed.
+6. No two changes that are not done modify or remove the same artifact.
+7. Every scenario of an `active` feature is named by at least one test.
+8. Files under `spec/` change only in commits that also move a change to `changes/done/`.
+
+Checks prove that the spec is **well formed**, not that it is **right**. Only people and real usage answer that.
+
+---
+
+## 10. Getting Started
+
+1. Create one repository for the product. Add `AGENTS.md` and `product.md` from [`templates/`](templates/).
+2. Open the first change, `CHG-INITIAL`. Ask an agent to help you write the actors, the key terms and **one** feature — the most valuable one for the business right now.
+3. For an existing product, use `CHG-INITIAL` to recover the spec from code, tests and team knowledge. Recover only what the next changes need, not the whole system.
+4. Approve it, build it, merge it. Then open the next change.
+
+---
+
+## 11. How SCPE Relates to Other Work
+
+| Approach | What SCPE takes | Where SCPE differs |
+|---|---|---|
+| [Product Definition as Code](https://github.com/product-definition-as-code/spec) | A canonical product definition in Markdown; stable IDs; typed links; explicit Product Changes; checks that prove structure, not truth | A smaller vocabulary (six types); the change is also the unit of delivery, with slices and tasks; no citation digests — tests reference scenario IDs directly |
+| SDD toolkits ([Spec Kit](https://github.com/github/spec-kit), OpenSpec) | Spec → plan → tasks → implementation per increment | The increment writes back into a lasting product definition instead of being archived as a one-off spec |
+| [specdriven.com](https://specdriven.com/) | Intent → spec → implementation → evidence; rules plus Given/When/Then examples per slice | Adds a fixed file layout and lifecycle, so agents can work without asking where things live |
+| [AI-Native Large-Scale Agile Manifesto](https://arxiv.org/html/2605.07717v2) | Shared living context over meetings; human in control, not in the loop; verification first; specialist agent roles | Applies these ideas at the level of one product repository, not a whole organisation |
+
+---
+
+## Appendix: Coming from Earlier SCPE Drafts
+
+| Before | Now |
+|---|---|
+| SNPA, ADP, SSOT, FDE, Tandem, Universal Developer | Plain words: product repository, the loop, the spec, approver, author |
+| `index.md`, `team_playbook.md`, `techinal_deal.md` | `AGENTS.md` + `decisions/` |
+| `product_vision.md`, `roadmap.md` | `product.md` (roadmap is an optional *Now / Next / Later* section listing change IDs) |
+| `glossary.md` | One `term` per file in `spec/terms/`, grouped by `context` |
+| `architecture.md` | `decisions/` + `app.md` manifests |
+| `features/<f>/index.md`, `feat_roadmap.md`, `epics/<e>/index.md`, `plan.md`, `tasks.md`, `epic_roadmap.md` | `spec/features/feat-*.md` (what the product does) + `changes/chg-*/change.md` (what changes next) |
+| `quick_status.md` at three levels | `status` in each change's frontmatter; the overview is `grep -H '^status:' changes/*/change.md` |
+| Upstream → Readiness Gate → Downstream → Audit | Propose → Approve → Build → Verify → Learn |
+| `Stale` state | Not needed: the spec changes only through changes, so drift cannot be silent |
+| `app_liquid.md` / `app_manifest.md` + `repo_pointer.md` | One `app.md` with optional `repo` and `revision` |
+| Mandatory Clean Architecture / hexagonal / SOLID | A product decision in `decisions/` |
