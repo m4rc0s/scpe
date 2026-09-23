@@ -1,77 +1,74 @@
 # 🌊 SCPE — Spec-Compiled Product Engineering
 
 > **Documentation becomes the contract. Code is the consequence.**
-> A Spec-Native Product Architecture (SNPA) framework, operated by the Autonomous Development Protocol (ADP), for teams building products with AI agents as engineering partners — not fancy autocomplete.
+> A product engineering method for teams building products with AI agents as engineering partners — not fancy autocomplete.
 
-[![Methodology](https://img.shields.io/badge/methodology-SCPE-6C5CE7)](SCPE_METHOD.md)
-[![Protocol](https://img.shields.io/badge/protocol-ADP-0984E3)](ADP_SPEC.md)
-[![Architecture](https://img.shields.io/badge/architecture-SNPA-00B894)](ARCHITECTURE.md)
-[![SSOT](https://img.shields.io/badge/SSOT-Markdown%20%2B%20Natural%20Language-000000)](#-what-is-scpe)
-[![Versioning](https://img.shields.io/badge/versioning-git%20tags-success)](#-versions)
+[![Method](https://img.shields.io/badge/method-SCPE-6C5CE7)](SCPE_METHOD.md)
+[![Source of truth](https://img.shields.io/badge/source%20of%20truth-Markdown%20%2B%20Natural%20Language-000000)](#-what-is-scpe)
 
-**[What is SCPE](#-what-is-scpe) • [Why it exists](#-why-scpe-exists) • [Pillars](#-the-pillars) • [Get Started](#-get-started) • [Wave Pipeline](#-the-wave-pipeline) • [Architecture](#-architecture-snpa) • [Protocol](#-protocol-adp) • [FAQ](#-faq) • [Versions](#-versions)**
+**[What is SCPE](#-what-is-scpe) • [Why it exists](#-why-scpe-exists) • [Pillars](#-the-pillars) • [Get Started](#-get-started) • [Wave Pipeline](#-the-wave-pipeline) • [Workspace](#%EF%B8%8F-the-product-workspace) • [Epic States](#%EF%B8%8F-epic-states) • [FAQ](#-faq)**
 
 ---
 
 ## 🤔 What is SCPE?
 
-**SCPE (Spec-Compiled Product Engineering)** starts from a simple premise: if an AI agent can already write code with competitive quality, a team's bottleneck is no longer "writing syntax" — it has shifted to **specifying business intent with sufficient precision for an agent to compile it into software**.
+**SCPE (Spec-Compiled Product Engineering)** starts from a simple premise: if an AI agent can already write code with competitive quality, a team's bottleneck is no longer writing syntax — it is **specifying business intent precisely enough for an agent to compile it into software**.
 
-In this framework:
+In this method:
 
-* Living documentation, written purely in **Markdown and natural language**, is the **immutable contract** and single source of truth (SSOT) — not an auxiliary artifact that goes stale in the first sprint.
+* Living documentation, written in **Markdown and natural language**, is the contract and the single source of truth — not a side artifact that goes stale in the first sprint.
 * Code in `apps/` is **generated as a consequence** of the specification, never the starting point of work.
-* Autonomous execution engines — any agent capable of reading Markdown and writing code — compile this specification into real products, following an auditable operational protocol, not a loose chat prompt.
-
-This is not *prompt engineering* disguised as a methodology. It is a product engineering method — with defined architecture, state machine, and roles — that treats specifications with the same rigor we treat code today.
+* Any agent that can read Markdown and write code compiles the specification into a real product, following a clear workflow — not a loose chat prompt.
+* **Everyone is a Developer**: PMs, designers, engineers, and domain experts all write the specification together.
 
 ---
 
 ## 🌍 Why SCPE Exists
 
-The **Spec-Driven Development (SDD)** movement already has open references — [GitHub Spec-Kit](https://github.com/github/spec-kit), OpenSpec/SpecDD, [The SDD Standard](https://github.com/mmanzini/Spec-driven-development). SCPE does not compete with this ecosystem; it occupies a specific position within it.
+The **Spec-Driven Development** movement already has open references. SCPE builds on them and occupies a specific position:
 
-| Framework | Problem it Solves | Where SCPE Differs |
+| Reference | What It Solves | Where SCPE Differs |
 |---|---|---|
-| **GitHub Spec-Kit** | Standardizes the Constitution → Spec → Plan → Tasks → Implementation cycle | SCPE isolates the *workspace* per entire product and formalizes `app_liquid.md` as each app's manifest — the unit is the product, not an isolated code repository |
-| **OpenSpec / SpecDD** | File formats and governance folders against context hallucination | SCPE binds the specification to a **state protocol** (`Draft → Ready → WIP → Done → Stale`) executable by an agent without ambiguity |
-| **The SDD Standard** | Templates for Product Briefs, Steering Docs, Feature Specs | SCPE adopts conceptual DDD — ubiquitous language, bounded contexts, invariants — as the modeling vocabulary, not merely the file format |
+| [GitHub Spec-Kit](https://github.com/github/spec-kit), OpenSpec | Spec → Plan → Tasks → Implementation for one change | The unit is the whole **product**: one workspace holds the vision, glossary, features, and every app |
+| [Product Definition as Code](https://github.com/product-definition-as-code/spec) | A versioned, validated product definition in Markdown | Lighter: plain Markdown in a fixed workspace, written by everyone, no schemas required |
+| [specdriven.com](https://specdriven.com/) | Intent → Spec → Implementation → Evidence, with rules and *Given/When/Then* examples | Adds a workspace layout and an epic state machine an agent can follow |
+| [AI-Native Agile Manifesto](https://arxiv.org/html/2605.07717v2) | Shared living context, humans in control, verification first | Applied to one product team and its repository |
 
-**SCPE's bottom line:** Specification is not *about* the code — it **is** the product. Code is the compilation.
+**SCPE's bottom line:** The specification is not *about* the code — it **is** the product. Code is the compilation.
 
 ---
 
 ## 🧭 The Pillars
 
-- 🔎 **Incremental Feature Discovery** — No mapping the entire system from scratch. The team builds the macro vision of the most critical feature for the business *now*, learns from real delivery, and iterates.
-- 🏗️ **Spec-Native Product Architecture (SNPA)** — Absolute workspace isolation per product and universal manifests (`app_liquid.md`) for each application in `apps/`.
-- 🤖 **Autonomous Development Protocol (ADP)** — Wave pipeline (Upstream → Readiness Gate → Downstream → Audit), with a formal state machine per epic.
-- 🧑‍💻 **Universal Developer** — PMs, designers, staff engineers, and domain experts are all "developers": everyone models intent; no one merely "hands off requirements".
-- 🧩 **DDD as a Language, Not a Ritual** — Ubiquitous language, bounded contexts, and invariants guide conceptual modeling before a single line of code exists.
+- 🧑‍💻 **Everyone is a Developer** — PMs, designers, staff engineers, and domain experts all model intent; nobody just hands off requirements. Humans decide; agents execute.
+- 🔎 **Incremental Feature Discovery** — No mapping the entire system upfront. Build the macro vision of the most critical feature *now*, learn from real delivery, and iterate.
+- 🏗️ **Product Workspace** — One isolated workspace per product, with an `app.md` manifest for each application in `apps/`.
+- 🌊 **Wave Pipeline** — Upstream → Readiness Gate → Downstream → Audit, with a formal state for each epic.
+- 🧩 **DDD as a Language, Not a Ritual** — Ubiquitous language, bounded contexts, invariants, and *Given/When/Then* examples shape the model before any code exists.
 
 ---
 
 ## 🚀 Get Started
 
-There is no installer — SCPE is a specification, not a package. Adopting the method means structuring your product workspace like this:
+There is no installer — SCPE is a method, not a package. Adopting it means structuring your product workspace like this:
 
 ```bash
-# 1. Create the isolated workspace for your product (one workspace per product, always)
+# 1. Create the workspace for your product (one workspace per product, always)
 mkdir -p ~/product_design/myproduct/{apps,features,assets}
 cd ~/product_design/myproduct
 
-# 2. Create the baseline context files — the product root
+# 2. Create the product root files
 touch index.md product_vision.md roadmap.md glossary.md \
       architecture.md techinal_deal.md team_playbook.md quick_status.md
 ```
 
 Then:
 
-1. Read the **[master document](SCPE_METHOD.md)** — the complete method manifesto.
-2. Fill out `product_vision.md` and `glossary.md` alongside your AI agent — this is the **Upstream**.
-3. Open the first feature in `features/<name>/index.md` and model the first epic in `plan.md`.
-4. Pass through the **Readiness Gate** — Tech Lead / FDE validates the model and marks the epic `Ready`.
-5. Let **Downstream** compile: the agent reads `plan.md`, generates `tasks.md`, and writes code in `apps/`.
+1. Read the **[method](SCPE_METHOD.md)**.
+2. Fill in `product_vision.md` and `glossary.md` with your AI agent — this is **Upstream**.
+3. Open the first feature in `features/<name>/index.md` and model the first epic in `plan.md`: rules, examples, and slices.
+4. Pass the **Readiness Gate** — the Tech Lead validates the model and marks the epic `Ready`.
+5. Let **Downstream** compile: the agent reads `plan.md`, writes `tasks.md`, and builds code and tests in `apps/`.
 
 No installation. No proprietary CLI. Just Markdown, Git, and the agent your team already uses.
 
@@ -82,47 +79,47 @@ No installation. No proprietary CLI. Just Markdown, Git, and the agent your team
 ```text
  UPSTREAM               READINESS GATE            DOWNSTREAM                AUDIT
 ┌──────────────┐        ┌───────────────┐        ┌────────────────┐       ┌─────────────────┐
-│ Feature      │        │ Tech Lead/FDE │        │ plan.md   →     │       │ quick_status.md │
-│ macro vision │ ─────▶ │ validates     │ ─────▶ │ tasks.md  →     │ ────▶ │ tracked in      │
-│ + plan.md    │        │ model & marks │        │ code in         │       │ real-time       │
-│ (AI copilot) │        │ Ready         │        │ apps/           │       │                 │
+│ Feature      │        │ Tech Lead     │        │ plan.md   →    │       │ quick_status.md │
+│ macro vision │ ─────▶ │ validates     │ ─────▶ │ tasks.md  →    │ ────▶ │ tracked in      │
+│ + plan.md    │        │ model & marks │        │ code in        │       │ real time       │
+│ (AI copilot) │        │ Ready         │        │ apps/          │       │                 │
 └──────────────┘        └───────────────┘        └────────────────┘       └─────────────────┘
 ```
 
-*Non-waterfall*: Waves run concurrently and asynchronously across distinct features — never in a single cascade for the entire product.
+*Non-waterfall*: Waves run concurrently across different features — never as a single cascade for the whole product.
 
 ---
 
-## 🏛️ Architecture: SNPA
+## 🏛️ The Product Workspace
 
 ```text
-myproduct/                     # isolated workspace — one per product
+myproduct/                     # one workspace per product
 ├── index.md                   # master guide and navigation
 ├── product_vision.md          # vision, business goals, core problem
 ├── glossary.md                # ubiquitous language (DDD)
-├── architecture.md            # C4 Model, integrations
-├── quick_status.md            # global control panel
+├── architecture.md            # C4 model, integrations
+├── quick_status.md            # product-wide status panel
 ├── apps/                      # generated code — consequence, not starting point
 │   └── api-core/
-│       ├── app_liquid.md      # universal application manifest
+│       ├── app.md             # application manifest
 │       └── src/...
 └── features/                  # development cycle sliced by domain
     └── checkout/
         ├── index.md
         └── epics/
             └── pix-payment/
-                ├── plan.md          # conceptual DDD of the epic
+                ├── plan.md          # rules, examples, and slices
                 ├── tasks.md         # atomic task queue
                 └── quick_status.md  # epic state
 ```
 
-Complete specification in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+The full workspace and the standard format of each file are in **[SCPE_METHOD.md](SCPE_METHOD.md)**.
 
 ---
 
-## ⚙️ Protocol: ADP
+## ⚙️ Epic States
 
-Each epic is an explicit state machine — no implicit states, no ambiguity for the agent:
+Each epic has one explicit state — no implicit states, no ambiguity for the agent:
 
 ```text
 Draft → Ready → WIP → Done
@@ -132,33 +129,33 @@ Draft → Ready → WIP → Done
            └───→ (returns to Ready after resolution)
 ```
 
-- **`Draft`** — in modeling, not yet validated.
+- **`Draft`** — being modeled, not yet validated.
 - **`Ready`** — approved at the Readiness Gate.
-- **`WIP`** — currently being executed by an autonomous engine.
-- **`Blocked`** — external dependency or defect interrupted execution.
+- **`WIP`** — being built by an agent.
+- **`Blocked`** — stopped by an external dependency or a defect.
 - **`Done`** — code matches the current plan.
-- **`Stale`** — plan changed after delivery; re-enters Readiness Gate before any new execution.
+- **`Stale`** — plan changed after delivery; goes back through the Readiness Gate before any new work.
 
-This is what makes "documentation as single source of truth" an **actively maintained** property, not slide aspiration. Full details in **[SCPE_METHOD.md](SCPE_METHOD.md#4-protocol-autonomous-development-protocol-adp)** and **[ADP_SPEC.md](ADP_SPEC.md)**.
+This is what keeps "documentation as single source of truth" an **actively maintained** property. Details in **[SCPE_METHOD.md](SCPE_METHOD.md#44-epic-state-machine)**.
 
 ---
 
 ## ❓ FAQ
 
 **Does SCPE replace Clean Architecture, DDD, SOLID?**
-No — it presupposes them. SCPE determines *when* and *by whom* intent is specified; generated code in `apps/` follows whatever technical standards the product's `techinal_deal.md` defines.
+No — it presupposes them. SCPE decides *when* and *by whom* intent is specified; code in `apps/` follows whatever standards the product's `techinal_deal.md` defines.
 
 **Do I need a specific tool to adopt SCPE?**
-No. The method is execution-engine agnostic: any AI agent capable of reading Markdown and writing code works as Downstream.
+No. Any AI agent that can read Markdown and write code works for Downstream.
 
-**What happens if I change `plan.md` after the epic is already delivered?**
-This is handled formally: the epic transitions to `Stale` and re-enters the Readiness Gate — it does not become silent, implicit technical debt.
+**What happens if I change `plan.md` after the epic is delivered?**
+The epic becomes `Stale` and goes back to the Readiness Gate — it never turns into silent, hidden technical debt.
 
 **Does SCPE work with multiple code repositories per product?**
-Yes, via `repo_pointer.md`: the `app_manifest.md` stays in the product workspace, pointing to the external physical repository where code actually lives.
+Yes. The `app.md` stays in the product workspace, and a `repo_pointer.md` next to it points to the repository where the code lives.
 
 **Is this only for teams already using AI heavily?**
-It is designed for that scenario, but the core — living documentation as contract, conceptual DDD, state protocol — holds true even before an autonomous agent runs Downstream.
+It is designed for that, but the core — living documentation as contract, shared domain language, clear epic states — works even before an agent runs Downstream.
 
 ---
 
@@ -166,18 +163,14 @@ It is designed for that scenario, but the core — living documentation as contr
 
 | File | Role |
 |---|---|
-| [`SCPE_METHOD.md`](SCPE_METHOD.md) | Master document — complete and active method specification |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Spec-Native Product Architecture (SNPA), summary version |
-| [`ADP_SPEC.md`](ADP_SPEC.md) | Autonomous Development Protocol (ADP), summary version |
-| [`METHODOLOGY.md`](METHODOLOGY.md) | Inviolable principles, condensed version |
+| [`SCPE_METHOD.md`](SCPE_METHOD.md) | The complete method, including the standard format of every file |
 
 ---
 
 ## 🤝 Contributing
 
-This is a living method — just like the documentation it advocates. Disagreements, gaps found in practice, and change proposals follow the method's own principle: write the intent in Markdown, open the discussion, let consensus become a commit — and, when appropriate, a new tag.
+This is a living method — just like the documentation it advocates. Gaps found in practice and change proposals follow the method's own principle: write the intent in Markdown, open the discussion, and let consensus become a commit.
 
 ---
 
 <p align="center">Made by those who believe specification — not code — is the asset that endures.</p>
-
