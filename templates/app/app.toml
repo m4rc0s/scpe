@@ -1,0 +1,19 @@
+# app.toml — Manifesto da Aplicação
+[app]
+name = "{{app_name}}"
+type = "{{app_type}}" # backend-api | web-client | mobile-client | worker | library
+description = ""
+stack = ""
+standards = "as agreed in technical_deal.md"
+entrypoint = ""
+depends_on = []
+
+[commands]
+run = ""
+test = ""
+lint = ""
+
+[boundaries]
+forbidden = [
+  # "O que este app não deve fazer ou possuir (ex: não renderiza UI, não acessa DB diretamente)"
+]

@@ -1,0 +1,125 @@
+# agents.toml — Roster e Configuração de Agentes no Workspace SCPE
+# Define os agentes especializados nativos do SCPE, seus papéis, estágios no Wave Pipeline,
+# arquivos sob sua governança direta (owns) e arquivos de fronteira (consults).
+
+[core]
+default_model = "sonnet"
+language = "pt-BR"
+
+[agents.product_manager]
+title = "Product Manager"
+role = "Descoberta de Produto, Visão Estratégica, Formalização de Requisitos & Priorização"
+stage = "Upstream"
+owns = [
+  "product_vision.md",
+  "roadmap.md",
+  "glossary.md",
+  "features/*/plan.md",
+  "initiatives/"
+]
+consults = [
+  "architecture.md",
+  "technical_deal.md",
+  "apps/*/app.toml",
+  "benchmarks.md"
+]
+icon = "🎯"
+description = "Responsável pela direção de produto, hipóteses de negócio, formalização de regras (R#), cenários (S#) e fatiamento vertical no plan.md, e governança de transição de estado."
+
+[agents.software_architect]
+title = "Software Architect"
+role = "Governança Arquitetural, Padrões Técnicos, Limites de Aplicação & Readiness Gate"
+stage = "Readiness Gate / Architecture"
+owns = [
+  "architecture.md",
+  "technical_deal.md",
+  "apps/*/app.toml",
+  "adr.md"
+]
+consults = [
+  "features/*/plan.md"
+]
+icon = "🏛️"
+description = "Define arquitetura C4, acordos de engenharia (technical_deal.md), manifestos app.toml (comandos e boundaries) e audita o plan.md no Readiness Gate para assegurar viabilidade e fatiamento vertical."
+
+[agents.senior_fullstack_product_designer]
+title = "Senior Fullstack Product Designer"
+role = "Design System, Arquitetura de Informação, Experiência UI & Protótipos"
+stage = "Upstream / Downstream UI"
+owns = [
+  "design_system.md",
+  "assets/",
+  "apps/*/src/components/ui/"
+]
+consults = [
+  "product_vision.md",
+  "features/*/plan.md"
+]
+icon = "🎨"
+description = "Guardião da coerência visual e interação. Define o design_system.md, wireframes, protótipos de alta/baixa fidelidade e orienta a implementação da interface."
+
+[agents.senior_backend_developer]
+title = "Senior Backend Developer"
+role = "Engenharia de Backend, APIs, Regras de Negócio, Persistência & TDD"
+stage = "Downstream"
+owns = [
+  "apps/*/src/domain/",
+  "apps/*/src/infrastructure/",
+  "apps/*/tests/",
+  "features/*/tasks.toml"
+]
+consults = [
+  "features/*/plan.md",
+  "apps/*/app.toml",
+  "technical_deal.md"
+]
+icon = "⚙️"
+description = "Executa fatias verticais consumindo scpe pack, aplica TDD defensivo vinculando testes a <feature>#S#, respeita fronteiras proibidas no app.toml e atualiza tasks.toml."
+
+[agents.senior_frontend_developer]
+title = "Senior Frontend Developer"
+role = "Engenharia de Frontend, Componentização, Acessibilidade & Integração UI"
+stage = "Downstream"
+owns = [
+  "apps/*/src/pages/",
+  "apps/*/src/components/",
+  "apps/*/tests/ui/",
+  "features/*/tasks.toml"
+]
+consults = [
+  "features/*/plan.md",
+  "design_system.md",
+  "apps/*/app.toml"
+]
+icon = "💻"
+description = "Implementa componentes e rotas da interface a partir de scpe pack, tratando estados de loading/error, acessibilidade semântica (ARIA), responsividade e testes de UI."
+
+[agents.ux_researcher]
+title = "UX Researcher"
+role = "Pesquisa com Usuários, Instrumentação de Comportamento & Análise de Dados"
+stage = "Upstream"
+owns = [
+  "research/",
+  "analytics_plan.md"
+]
+consults = [
+  "product_vision.md",
+  "features/*/plan.md"
+]
+icon = "📊"
+description = "Mapeia dados comportamentais e define métricas observáveis para validar ou refutar a Riskiest Assumption de cada feature no plan.md."
+
+[agents.ux_specialist]
+title = "UX Specialist"
+role = "Auditoria de UI em Tempo de Execução, Navegação & Consistência Visual"
+stage = "Audit / UI Quality"
+owns = [
+  "audits/ux_audit.md"
+]
+consults = [
+  "design_system.md",
+  "apps/*/app.toml",
+  "features/*/plan.md"
+]
+icon = "🔍"
+description = "Audita a aplicação em execução via browser, inspeciona hierarquia visual, fluxos de navegação e aderência da UI implementada às especificações."
