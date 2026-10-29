@@ -1,0 +1,92 @@
+# tickets.toml — Breakdown for Initiative: SCPE 2.0 (The Compiled & Lean Spec Engine)
+# Table order is build order.
+
+[[epic]]
+id = 1
+slug = "epic-toml-templates"
+title = "Canonical TOML Schemas & Templates (app.toml & tasks.toml)"
+description = "Creates standard scaffolds for app.toml and tasks.toml in templates/, eliminating loose tasks.md and app.md."
+covers = ["R1", "R3"]
+
+[[epic]]
+id = 2
+slug = "epic-cli-engine"
+title = "SCPE Engine Refactor (scpe.py): JIT Pack, Term, Roadmap Sync & Git Branch"
+description = "Implements `scpe pack`, `scpe term`, `scpe roadmap --sync`, sequential numbering, and the `--branch` flag in Python 3.11+."
+covers = ["R1", "R2", "R4", "R5", "R6"]
+
+[[epic]]
+id = 3
+slug = "epic-method-spec"
+title = "Canonical Method Specification & ADR-001 Documentation"
+description = "Updates SCPE_METHOD.md, README.md, and adr.md reflecting the lean flat topology, TOML schemas, and the JIT compiled flow."
+covers = ["R1", "R2", "R3"]
+
+[[epic]]
+id = 4
+slug = "epic-skill-personas"
+title = "Skill & Persona Guidelines Update (SKILL.md & Agents)"
+description = "Updates SKILL.md and downstream personas to enforce the JIT pack protocol and handoff envelopes."
+covers = ["R4", "R5"]
+
+# ---- Planned Tasks / Entries in Build Order ----
+
+[[entry]]
+id = 1
+epic_id = 1
+type = "story"
+title = "Scaffold templates for app.toml and tasks.toml"
+description = "Create canonical templates for app.toml (manifest with boundaries) and tasks.toml (slices, tasks, states, log)."
+verify = "Templates parse without error using Python's tomllib."
+covers = ["R3"]
+after = []
+
+[[entry]]
+id = 2
+epic_id = 2
+type = "story"
+title = "Add tomllib support, sequential numbering and --branch to scpe.py"
+description = "Update scpe.py feature command to auto-detect next NNN number (e.g. 001, 002) and support git branch creation."
+verify = "scpe.py feature creates 00X-slug and optionally checks out feat/00X-slug."
+covers = ["R1", "R6"]
+after = [1]
+
+[[entry]]
+id = 3
+epic_id = 2
+type = "story"
+title = "Implement `scpe pack` and `scpe term` in scpe.py"
+description = "Add compile_slice engine that extracts only relevant R#, S#, glossary terms, and app boundaries into an ultra-lean payload."
+verify = "Running `scpe pack` on a feature emits valid TOML/JSON context payload under 1,000 tokens."
+covers = ["R4", "R5"]
+after = [2]
+
+[[entry]]
+id = 4
+epic_id = 2
+type = "story"
+title = "Implement `scpe roadmap --sync` in scpe.py"
+description = "Add automated synchronization of product root roadmap.md by scanning all features/00X-*/tasks.toml."
+verify = "Running `scpe roadmap --sync` generates clean markdown table in roadmap.md."
+covers = ["R2"]
+after = [3]
+
+[[entry]]
+id = 5
+epic_id = 3
+type = "story"
+title = "Update SCPE_METHOD.md and README.md"
+description = "Revise canonical documentation to explain the 00X-slug topology, TOML metadata, JIT compilation, and single roadmap."
+verify = "SCPE_METHOD.md sections 2, 3, 4 and 5 accurately describe the new engine."
+covers = ["R1", "R2", "R3"]
+after = [4]
+
+[[entry]]
+id = 6
+epic_id = 4
+type = "story"
+title = "Update SKILL.md and Downstream Personas"
+description = "Update SKILL.md and agent instructions (senior-backend-developer, senior-frontend-developer) to use scpe pack."
+verify = "SKILL.md downstream protocol mandates `scpe pack` and forbids manual multi-file reading."
+covers = ["R4"]
+after = [5]

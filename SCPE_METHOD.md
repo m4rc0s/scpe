@@ -8,15 +8,16 @@
 
 AI agents now write code with a quality that often matches experienced developers. The bottleneck has moved: it is no longer writing syntax, but **specifying business intent precisely enough for an agent to build it**.
 
-In SCPE, living documentation — written in **Markdown and natural language** — is the contract and the single source of truth. Code is its consequence.
+In SCPE, living documentation — written in **Markdown and natural language** — is the contract and the single source of truth for business intent. Machine execution state, task graphs, and manifests are maintained in **strongly typed TOML** (ADR-001). Code is their consequence.
 
-The method stands on five pillars:
+The method stands on six pillars:
 
 * **Everyone is a Developer:** Product managers, designers, engineers, and domain experts all model intent. Nobody just "hands off requirements".
 * **Incremental Feature Discovery:** Build the macro vision of the most critical feature for the business *now*, deliver it, learn, and iterate. Never map the entire system upfront.
-* **Product Workspace:** One isolated workspace per product, with a manifest (`app.md`) for each application in `apps/`.
-* **Wave Pipeline:** Agents execute the specification in a standard, asynchronous flow — Upstream → Readiness Gate → Downstream → Audit — with a formal state per epic.
-* **DDD as a Language:** Ubiquitous language, bounded contexts, invariants, and concrete examples shape the model before any code exists.
+* **Product Workspace & Lean Manifests:** One isolated workspace per product, with a typed manifest (`app.toml`) for each application in `apps/`.
+* **Flat Sequential Topology:** Features are atomic, sequentially numbered packages (`features/00X-<slug>/`), eliminating nested epic folders and duplicated roadmaps.
+* **JIT Context Compilation:** Downstream agents do not parse dozens of markdown files; the engine compiles exact slice context (`scpe pack`) containing only relevant rules, scenarios, terms, and boundaries (< 1k tokens).
+* **Wave Pipeline & DDD Rigor:** Agents execute the specification in an asynchronous flow — Upstream → Readiness Gate → Downstream → Audit — grounded in ubiquitous language, invariants, and test traceability.
 
 ### Why Markdown and Natural Language?
 
@@ -43,7 +44,8 @@ SCPE belongs to the **Spec-Driven Development** movement and borrows from its ne
 * **Clone the Product, Not the Service:** You clone the entire product. Documentation guides the agents; code is the subordinate asset that is validated, run, tested, and deployed.
 * **Product → Apps:** The product owns everything: `Product → Apps → {Backend, Client, …}`.
 * **Agreed Engineering Standards:** Generated code follows the standards the team agrees in `techinal_deal.md` — for example SOLID, Clean Architecture, Hexagonal (Ports and Adapters), and established design patterns.
-* **Application Manifest (`app.md`):** A short, generic Markdown descriptor that tells the agent the responsibility, stack, and boundaries of each application in `apps/`.
+* **Application Manifest (`app.toml`):** A strongly typed TOML descriptor (ADR-001) that specifies the responsibility, execution commands (`run`, `test`, `lint`), dependencies, and negative boundaries of each application in `apps/`.
+* **JIT Context Compilation (`scpe pack`):** Downstream agents receive focused, compiled context per vertical slice without loading the entire documentation corpus.
 
 ---
 
@@ -75,53 +77,62 @@ Keep your portfolio organized in one place (e.g., `$HOME/product_design/`), with
 myproduct/
 ├── index.md                 # Master guide: structure, summary, and navigation
 ├── product_vision.md        # Macro vision, business goals, profitability, and core problem
-├── roadmap.md               # Strategic direction and product milestones
+├── roadmap.md               # Strategic direction and product milestones (synced via scpe roadmap --sync)
 ├── glossary.md              # Ubiquitous language (domain terms)
 ├── architecture.md          # C4 model, systemic choices, and integrations
 ├── techinal_deal.md         # Technical agreements, AI guardrails, constraints, and approved stack
 ├── team_playbook.md         # Rules of engagement, workflow, and team culture
-├── quick_status.md          # Product-wide status panel
 ├── assets/                  # Reference documents, wireframes, and visual assets
-├── apps/                    # The software
-└── features/                # Development lifecycle, sliced by domain and functionality
+├── apps/                    # The software applications (each with app.toml)
+└── features/                # Development lifecycle, sliced into sequential feature folders
+    └── 001-pix-payment/     # Atomic capability folder
+        ├── plan.md          # Living specification: intent, rules (R#), examples (S#), slices
+        └── tasks.toml       # Machine execution: state, slices, task graph, and log
 ```
 
 ---
 
-## 3. Applications (`apps/`) and the Manifest (`app.md`)
+## 3. Applications (`apps/`) and the Manifest (`app.toml`)
 
-The `apps/` folder holds the software generated from the specification. Each application has a Markdown manifest: **`app.md`**.
+The `apps/` folder holds the software generated from the specification. Each application has a strongly typed TOML manifest: **`app.toml`** (ADR-001).
 
 ```text
 apps/
 ├── api-core/
-│   ├── app.md               # Application manifest
+│   ├── app.toml             # Application manifest and boundaries
 │   └── src/ ...             # Source code generated by the agent
 └── desktop-client/
-    ├── app.md               # Application manifest
+    ├── app.toml             # Application manifest and boundaries
     └── src/ ...             # Source code generated by the agent
 ```
 
-### Standard `app.md`:
+### Standard `app.toml`:
 
-A generic manifest that works for any kind of application — backend, web, mobile, worker, library, data pipeline.
+A strongly typed manifest that works for any kind of application — backend, web, mobile, worker, library, data pipeline.
 
-```markdown
-# App: api-core
+```toml
+[app]
+name = "api-core"
+type = "backend-api"
+description = "Core service for transaction processing and the financial ledger."
+stack = "Kotlin, Spring Boot, PostgreSQL"
+standards = "Clean Architecture, SOLID, Hexagonal"
+entrypoint = "src/main/kotlin/com/myproduct/Main.kt"
+depends_on = ["database", "payment-gateway"]
 
-- **name:** api-core
-- **type:** backend-api
-- **description:** Core service for transaction processing and the financial ledger.
-- **stack:** Kotlin, Spring Boot, PostgreSQL
-- **standards:** as agreed in techinal_deal.md (e.g., Clean Architecture, SOLID)
-- **entrypoint:** src/main/kotlin/com/myproduct/Main.kt
-- **depends_on:** web-checkout (HTTP), message broker (domain events)
-- **run:** ./gradlew bootRun
-- **test:** ./gradlew test
+[commands]
+run = "./gradlew bootRun"
+test = "./gradlew test"
+lint = "./gradlew check"
 
-## Boundaries
-What this app must not do or own (e.g., does not render UI, does not store card data).
+[boundaries]
+forbidden = [
+  "Does not render UI / HTML",
+  "Does not store card data in plaintext"
+]
 ```
+
+*(Note: The CLI engine remains backwards-compatible with legacy `app.md` files if present).*
 
 ---
 
@@ -132,54 +143,61 @@ What this app must not do or own (e.g., does not render UI, does not store card 
 SCPE rejects mapping an entire system upfront. The team builds the **macro vision of the most critical feature for the business right now**:
 
 * **Learn as you build:** Validate hypotheses quickly, iterate on real deliveries, fail early, adjust course.
-* **AI as co-pilot:** Developers use agents to draft and structure the intent of the priority feature into the standard files (`index.md`, `plan.md`).
+* **AI as co-pilot:** Developers use agents to draft and structure the intent of the priority feature into living Markdown (`plan.md`).
 
-### 4.2. Features, Epics, and `index.md`
+### 4.2. Flat Feature Topology & Sequential Numbering
 
-Work is organized in the directory tree. **`index.md`** is always the entry point of a folder, for people and agents alike.
+Work is organized flatly directly under `features/`. Each folder represents a deliverable capability and is prefixed with a 3-digit sequential number (`001`, `002`, `003`...):
 
 ```text
 features/
-└── [feature_name]/
-    ├── index.md             # Feature overview, business scope, and value
-    ├── feat_roadmap.md      # Feature milestones
-    ├── quick_status.md      # Feature status summary
-    └── epics/               # The feature broken into deliverable packages
-        └── [epic_name]/
-            ├── index.md         # Epic scope and bounded contexts
-            ├── plan.md          # Conceptual model: rules, examples, and slices
-            ├── tasks.md         # Atomic task queue for the agent
-            ├── quick_status.md  # Epic state and log
-            └── epic_roadmap.md  # Tactical execution planning
+├── 001-user-auth/
+│   ├── plan.md              # Living specification: rules, examples, slices
+│   └── tasks.toml           # Slices, tasks, execution state, and temporal log
+└── 002-pix-payment/
+    ├── plan.md
+    └── tasks.toml
 ```
 
-The content of each file is standardized in [Section 5](#5-standard-file-formats).
+This flat topology replaces the legacy nested `features/<feature>/epics/<epic>/` structure, eliminating intermediate folders, redundant `quick_status.md` files, and local roadmaps.
 
-#### 4.2.1. Vertical Slicing (Recommended)
+#### 4.2.1. Git Branch-per-Feature Lifecycle
+Every feature can be developed in its own isolated Git branch:
+```bash
+python3 scripts/scpe.py feature "Pix Payment" --branch
+```
+This automatically detects the next prefix (e.g. `002`), scaffolds `features/002-pix-payment/`, and checks out the branch `feat/002-pix-payment`.
 
-How an epic is sliced decides when users see value — and when the team starts learning.
+#### 4.2.2. Vertical Slicing (Recommended)
+
+How a feature is sliced decides when users see value — and when the team starts learning.
 
 * **Horizontal slicing** builds one layer at a time (all data, then all API, then all UI). Nothing is usable until every layer is done.
-* **Vertical slicing** (the default) makes each epic — and, when possible, each task — cut across every layer needed to deliver a small but real increment to the user. Each slice is a chance to validate, learn, and pivot.
+* **Vertical slicing** (the default) makes each feature slice cut across every layer needed to deliver a small but real increment to the user. Each slice is a chance to validate, learn, and pivot.
 
-This is a recommendation, not a rule. When an epic cannot be sliced vertically — an infrastructure migration, for instance — the Tech Lead may accept another approach at the Readiness Gate. The choice and its reason are written in `plan.md`.
+This is a recommendation, not a rule. When a feature cannot be sliced vertically — an infrastructure migration, for instance — the Tech Lead may accept another approach at the Readiness Gate. The choice and its reason are written in `plan.md`.
 
-### 4.3. The Wave Pipeline (Non-Waterfall)
+### 4.3. The Wave Pipeline & JIT Context Compilation
 
-Work flows through four waves. Different features move through them at the same time — never as a single cascade for the whole product.
+Work flows through four waves with JIT compilation replacing raw document loading:
 
-| Wave | Who | What Happens | Files |
+| Wave | Who | What Happens | Artifacts |
 |---|---|---|---|
-| **1. Upstream** | Developers (any role) with an agent as co-pilot | Align on the current priority, scope the feature and epic, and model the plan: terms, rules, examples, slices | `product_vision.md`, `glossary.md`, `index.md`, `plan.md` |
-| **2. Readiness Gate** | Tech Lead | Check the model is consistent, complete, and fits the architecture; mark the epic `Ready` | `plan.md`, `quick_status.md` |
-| **3. Downstream** | Agent, reviewed by Developers | Turn the plan into atomic tasks and write code and tests, slice by slice | `tasks.md`, `apps/` |
-| **4. Audit** | Everyone | Track progress, learnings, and blockers as they happen | `quick_status.md` |
+| **1. Upstream** | Developers (any role) with an agent | Align on current priority, scope the feature, and model the plan: terms, rules `R#`, examples `S#`, vertical slices | `product_vision.md`, `glossary.md`, `features/00X-*/plan.md` |
+| **2. Readiness Gate** | Tech Lead / Tooling | Verify consistency, ensure all `R#` have `S#` scenarios, compile initial `tasks.toml`, set state to `Ready` | `tasks.toml` |
+| **3. Downstream (JIT)** | Agent (`scpe pack`) | Compiles slice payload (<1k tokens) containing only relevant rules, scenarios, terms, and commands. Writes code and tests in `apps/` | `tasks.toml`, `apps/` |
+| **4. Audit & Sync** | Everyone / CLI | Track progress, log gotchas in `tasks.toml`, sync product root `roadmap.md` via `scpe roadmap --sync` | `roadmap.md`, `tasks.toml` |
 
-Before any of this, the product root files (`product_vision.md`, `architecture.md`, `techinal_deal.md`) set the base context and the engineering standards the agent must follow.
+#### The JIT Compilation Flow:
+Instead of loading multiple markdowns into developer agent contexts, the agent runs:
+```bash
+python3 scripts/scpe.py pack 002-pix-payment 1
+```
+The engine inspects Slice 1, extracts solely the matching `R#` and `S#` blocks from `plan.md`, definitions from `glossary.md`, and test/build commands and boundaries from `app.toml`. The result is an ultra-lean context payload (~700 tokens) with zero token waste.
 
-### 4.4. Epic State Machine
+### 4.4. Feature State Machine
 
-The epic's `quick_status.md` declares exactly one of these states — no other value is valid:
+The feature's `tasks.toml` declares exactly one of these states under `[state]`:
 
 ```text
 Draft → Ready → WIP → Done
@@ -192,26 +210,19 @@ Draft → Ready → WIP → Done
 | State | Meaning | Set by |
 |---|---|---|
 | `Draft` | Being modeled in Upstream; not yet submitted to the Readiness Gate | Developers |
-| `Ready` | Approved at the Readiness Gate; can be built | Tech Lead |
-| `WIP` | Being built by an agent | Agent |
-| `Blocked` | Stopped by an external dependency or a discovered defect; returns to `Ready` once resolved | Agent or Developer |
-| `Done` | Code in `apps/` matches the current `plan.md` | Agent, confirmed by review |
-| `Stale` | `plan.md` was changed after `Done`; only a new Readiness Gate returns it to `Ready` | Automatic, on any edit to `plan.md` |
-
-Each transition is written by whoever performs the action that causes it. This keeps the protocol unambiguous for an agent.
+| `Ready` | Approved at the Readiness Gate; ready to be built | Tech Lead |
+| `WIP` | Being built by a Downstream agent | Agent |
+| `Blocked` | Stopped by an external dependency; returns to `Ready` once resolved | Agent or Developer |
+| `Done` | Code in `apps/` matches current `plan.md` and passes tests | Agent, confirmed by review |
+| `Stale` | `plan.md` was changed after `Done`; requires review before re-execution | Automatic, on any edit to `plan.md` |
 
 ### 4.5. Spec Drift
 
-**Rule:** No change to the `plan.md` of a `Done` epic is silent.
+**Rule:** No change to the `plan.md` of a `Done` feature is silent.
 
-When `plan.md` changes on a `Done` epic, the epic becomes `Stale` and goes back to the Readiness Gate — not to Upstream, because the model was already validated once. Only the difference needs review.
-
-The Tech Lead reviews the difference and records one of two decisions in `epic_roadmap.md`:
-
-- **Re-execute** — the change affects implemented behavior. The epic returns to `Ready`, and a new Downstream cycle updates the affected code.
-- **Accept the drift** — the change is cosmetic or does not affect behavior. The epic goes back to `Done`, with a note explaining why the difference between `plan.md` and `apps/` is acceptable.
-
-This keeps "documentation as single source of truth" an actively maintained property, not an aspiration.
+When `plan.md` changes on a `Done` feature, the feature becomes `Stale` and returns to the Readiness Gate. Only the difference needs review:
+- **Re-execute:** The change affects implemented behavior. The feature returns to `Ready`, and Downstream updates the affected code.
+- **Accept the drift:** The change is cosmetic or non-breaking. The feature returns to `Done` with a log entry in `tasks.toml`.
 
 ### 4.6. Multi-Repository Applications
 
@@ -220,57 +231,21 @@ When an application's code lives in a separate repository, its manifest stays in
 ```text
 apps/
 └── api-core/
-    ├── app.md               # Stays inside the product workspace
+    ├── app.toml             # Stays inside the product workspace
     └── repo_pointer.md      # Repository URL, integration branch, reference commit
 ```
 
-`repo_pointer.md` holds only location data, never code. The agent writes code to the external repository, but status (`quick_status.md`) and specification (`plan.md`, `app.md`) always stay in the product workspace. What is distributed is the *code*, never the *specification*.
+`repo_pointer.md` holds only location data, never code. The agent writes code to the external repository, but status (`tasks.toml`) and specification (`plan.md`, `app.toml`) always stay in the product workspace. What is distributed is the *code*, never the *specification*.
 
 ---
 
 ## 5. Standard File Formats
 
-Every file below is plain Markdown that any Developer can write — no special syntax, no tool required. Short fields use the same `- **field:** value` style as `app.md`, so both people and agents can scan them.
+In SCPE, living Markdown represents human intent and domain rules, while TOML represents machine execution and manifests.
 
-**Naming inside an epic:** rules are numbered `R1, R2…` and examples `S1, S2…`, local to the epic. Tasks and tests cite them as `<epic_name>#S2`. This is the traceability link from specification to code.
+Naming inside a feature: rules are numbered `R1, R2…` and examples `S1, S2…`. Tasks and tests cite them as `<feature_name>#S2`. This is the traceability link from specification to code.
 
-### Feature `index.md`
-
-```markdown
-# Feature: Checkout
-
-- **goal:** Customers complete a purchase quickly and safely.
-- **users:** Customer, Store Operator
-- **bounded_context:** Payments
-- **business_value:** Reduce checkout abandonment from 38% to 25%.
-
-## Scope
-What this feature covers.
-
-## Out of Scope
-What it deliberately does not cover.
-
-## Epics
-- [pix-payment](epics/pix-payment/index.md) — Ready
-```
-
-### Epic `index.md`
-
-```markdown
-# Epic: Pix Payment
-
-- **feature:** checkout
-- **bounded_context:** Payments
-- **apps:** api-core, web-checkout
-
-## Scope
-Customers pay an order with Pix and see the confirmation.
-
-## Out of Scope
-Pix refunds.
-```
-
-### Epic `plan.md`
+### Feature `plan.md`
 
 ```markdown
 # Plan: Pix Payment
@@ -299,36 +274,49 @@ Customers pay instantly with Pix instead of typing card details.
 - Should differences under R$ 0,01 be accepted? (Finance)
 ```
 
-Rules for a good plan:
+### Feature `tasks.toml` (Execution Graph & State)
 
-- One `When` per example; `Then` states something a user or another system can observe.
-- An epic cannot pass the Readiness Gate with blocking open questions.
-- If slices are not vertical, say why under **Slices**.
+```toml
+[state]
+current = "WIP"
+updated_at = "2026-10-29"
+updated_by = "senior-backend-developer"
 
-### Epic `tasks.md`
+[[slice]]
+id = 1
+name = "Pay an order with Pix"
+description = "Immediate payment generation and webhook confirmation."
+covers = ["S1", "R2"]
+apps = ["api-core", "web-checkout"]
+after = []
+hitl = false
+verify = "api-core#S1 and web-checkout#S1 integration tests pass"
 
-```markdown
-# Tasks: Pix Payment
+[[task]]
+id = "T1"
+slice_id = 1
+title = "Create a Pix charge for an order"
+covers = ["S1"]
+parallel = false
+target_files = [
+  "apps/api-core/src/pix.controller.ts",
+  "apps/api-core/tests/pix-payment#S1.spec.ts"
+]
 
-- [x] T1 — Create a Pix charge for an order (S1)
-- [ ] T2 — Confirm payment from the bank webhook and mark the order paid (S1, R2)
-- [ ] T3 — Expire unpaid charges after 30 minutes (S2, R1)
-```
+[[task]]
+id = "T2"
+slice_id = 1
+title = "Confirm payment from the bank webhook"
+covers = ["S1", "R2"]
+parallel = false
+target_files = [
+  "apps/api-core/src/pix-webhook.handler.ts"
+]
 
-The agent writes this file from `plan.md` at the start of Downstream. Every task cites the examples or rules it implements, and every example is covered by at least one test named after it (e.g., `pix-payment#S2 expired charge can be recreated`).
-
-### Epic `quick_status.md`
-
-```markdown
-# Status: Pix Payment
-
-- **state:** WIP
-
-## Log
-- 2026-09-20 — T1 done. Bank sandbox rejects amounts with 3 decimals; no plan impact.
-
-## Blockers
-None.
+[[log]]
+date = "2026-10-29"
+author = "senior-backend-developer"
+entry = "T1 done. Bank sandbox rejects amounts with 3 decimals; no plan impact."
 ```
 
 ### `glossary.md` Entry
@@ -338,6 +326,17 @@ None.
 - **bounded_context:** Sales
 - **definition:** A signed agreement that obliges both parties.
 - **not_to_be_confused_with:** Proposal — an unsigned offer that can still change.
+```
+
+### Product `roadmap.md` (Auto-Synchronized)
+
+```markdown
+# Product Roadmap
+
+| Feature | State | Slices Total | Done | WIP | Open Blockers |
+|---|---|---|---|---|---|
+| [001-user-auth](features/001-user-auth/) | Done | 2 | 2 | 0 | None |
+| [002-pix-payment](features/002-pix-payment/) | WIP | 2 | 1 | 1 | None |
 ```
 
 ---

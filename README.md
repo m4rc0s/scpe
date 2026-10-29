@@ -42,48 +42,50 @@ The **Spec-Driven Development** movement already has open references. SCPE build
 
 - 🧑‍💻 **Everyone is a Developer** — PMs, designers, staff engineers, and domain experts all model intent; nobody just hands off requirements. Humans decide; agents execute.
 - 🔎 **Incremental Feature Discovery** — No mapping the entire system upfront. Build the macro vision of the most critical feature *now*, learn from real delivery, and iterate.
-- 🏗️ **Product Workspace** — One isolated workspace per product, with an `app.md` manifest for each application in `apps/`.
-- 🌊 **Wave Pipeline** — Upstream → Readiness Gate → Downstream → Audit, with a formal state for each epic.
+- 🏗️ **Product Workspace & Lean Manifests** — One isolated workspace per product, with strongly typed `app.toml` manifests for each application in `apps/`.
+- ⚡ **JIT Context Compilation (`scpe pack`)** — Downstream agents do not parse dozens of markdown files; the engine compiles exact slice context (<1k tokens) containing only relevant rules, scenarios, terms, and boundaries.
+- 📐 **Flat Sequential Topology & Git Lifecycles** — Features live in flat folders (`features/00X-<slug>/`) with automatic sequential prefixes and isolated Git feature branches (`feat/00X-<slug>`).
+- 🌊 **Wave Pipeline & Traceability** — Upstream → Readiness Gate → Downstream → Audit, with machine states in `tasks.toml` and test evidence linking back to `<feature>#S#`.
 - 🧩 **DDD as a Language, Not a Ritual** — Ubiquitous language, bounded contexts, invariants, and *Given/When/Then* examples shape the model before any code exists.
 
 ---
 
 ## 🚀 Get Started
 
-There is no installer — SCPE is a method, not a package. Adopting it means structuring your product workspace like this:
+SCPE provides a zero-dependency CLI engine (`scpe.py`) using Python 3.11+ standard library:
 
 ```bash
-# 1. Create the workspace for your product (one workspace per product, always)
-mkdir -p ~/product_design/myproduct/{apps,features,assets}
+# 1. Initialize a new product workspace
+python3 scripts/scpe.py init "My Product" ~/product_design/myproduct
 cd ~/product_design/myproduct
 
-# 2. Create the product root files
-touch index.md product_vision.md roadmap.md glossary.md \
-      architecture.md techinal_deal.md team_playbook.md quick_status.md
+# 2. Create your first feature in its own Git branch
+python3 scripts/scpe.py feature "Pix Payment" --branch
+
+# 3. Model your plan in features/001-pix-payment/plan.md (Upstream)
+# 4. Compile tasks into tasks.toml and pass the Readiness Gate
+
+# 5. Compile JIT slice context for downstream AI agents (Downstream)
+python3 scripts/scpe.py pack 001-pix-payment 1
+
+# 6. Auto-sync the product roadmap
+python3 scripts/scpe.py roadmap --sync
 ```
 
-Then:
-
-1. Read the **[method](SCPE_METHOD.md)**.
-2. Fill in `product_vision.md` and `glossary.md` with your AI agent — this is **Upstream**.
-3. Open the first feature in `features/<name>/index.md` and model the first epic in `plan.md`: rules, examples, and slices.
-4. Pass the **Readiness Gate** — the Tech Lead validates the model and marks the epic `Ready`.
-5. Let **Downstream** compile: the agent reads `plan.md`, writes `tasks.md`, and builds code and tests in `apps/`.
-
-No installation. No proprietary CLI. Just Markdown, Git, and the agent your team already uses.
+No external dependencies. Just Python standard library, Markdown, TOML, Git, and your AI agent.
 
 ---
 
 ## 🌊 The Wave Pipeline
 
 ```text
- UPSTREAM               READINESS GATE            DOWNSTREAM                AUDIT
-┌──────────────┐        ┌───────────────┐        ┌────────────────┐       ┌─────────────────┐
-│ Feature      │        │ Tech Lead     │        │ plan.md   →    │       │ quick_status.md │
-│ macro vision │ ─────▶ │ validates     │ ─────▶ │ tasks.md  →    │ ────▶ │ tracked in      │
-│ + plan.md    │        │ model & marks │        │ code in        │       │ real time       │
-│ (AI copilot) │        │ Ready         │        │ apps/          │       │                 │
-└──────────────┘        └───────────────┘        └────────────────┘       └─────────────────┘
+ UPSTREAM               READINESS GATE            DOWNSTREAM (JIT)            AUDIT & SYNC
+┌──────────────┐        ┌───────────────┐        ┌──────────────────┐       ┌─────────────────┐
+│ Feature      │        │ Tech Lead     │        │ scpe pack <f> <s>│       │ scpe roadmap    │
+│ plan.md      │ ─────▶ │ verifies &    │ ─────▶ │ compiled context │ ────▶ │ --sync          │
+│ (AI copilot) │        │ compiles      │        │ → code & tests   │       │ tasks.toml log  │
+│              │        │ tasks.toml    │        │ in apps/ (<1k tok│       │                 │
+└──────────────┘        └───────────────┘        └──────────────────┘       └─────────────────┘
 ```
 
 *Non-waterfall*: Waves run concurrently across different features — never as a single cascade for the whole product.
@@ -96,24 +98,21 @@ No installation. No proprietary CLI. Just Markdown, Git, and the agent your team
 myproduct/                     # one workspace per product
 ├── index.md                   # master guide and navigation
 ├── product_vision.md          # vision, business goals, core problem
+├── roadmap.md                 # strategic roadmap (synced via scpe roadmap --sync)
 ├── glossary.md                # ubiquitous language (DDD)
 ├── architecture.md            # C4 model, integrations
-├── quick_status.md            # product-wide status panel
+├── technical_deal.md          # agreements, constraints, approved stack
 ├── apps/                      # generated code — consequence, not starting point
 │   └── api-core/
-│       ├── app.md             # application manifest
+│       ├── app.toml           # application manifest & boundaries (ADR-001)
 │       └── src/...
-└── features/                  # development cycle sliced by domain
-    └── checkout/
-        ├── index.md
-        └── epics/
-            └── pix-payment/
-                ├── plan.md          # rules, examples, and slices
-                ├── tasks.md         # atomic task queue
-                └── quick_status.md  # epic state
+└── features/                  # flat sequential lifecycle
+    └── 001-pix-payment/
+        ├── plan.md            # intent, business rules (R#), examples (S#), slices
+        └── tasks.toml         # state, slices, task graph, temporal log
 ```
 
-The full workspace and the standard format of each file are in **[SCPE_METHOD.md](SCPE_METHOD.md)**.
+The full workspace and the standard format of each file are in **[SCPE_METHOD.md](SCPE_METHOD.md)** and **[ADR-001](adr.md)**.
 
 ---
 
@@ -161,9 +160,12 @@ It is designed for that, but the core — living documentation as contract, shar
 
 ## 🗺️ Repository Map
 
-| File | Role |
+| File / Folder | Role |
 |---|---|
 | [`SCPE_METHOD.md`](SCPE_METHOD.md) | The complete method, including the standard format of every file |
+| [`adr.md`](adr.md) | Architecture Decision Records (e.g. ADR-001: TOML execution metadata) |
+| [`scripts/scpe.py`](scripts/scpe.py) | Zero-dependency CLI engine (init, feature, pack, roadmap, term, validate) |
+| [`templates/`](templates/) | Canonical scaffolds for `app.toml`, `plan.md`, `tasks.toml` |
 
 ---
 

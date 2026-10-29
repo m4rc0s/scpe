@@ -1,0 +1,31 @@
+# tasks.toml — Fatias, Tarefas e Execução da Feature
+[state]
+current = "Draft" # Draft -> Ready -> WIP -> Done | Blocked | Stale
+updated_at = "{{today}}"
+updated_by = "scpe-init"
+
+# Slices definem entregas verticais fim a fim
+[[slice]]
+id = 1
+name = "Primeira fatia funcional"
+description = "Descreva a capacidade entregue nesta fatia."
+covers = ["S1", "R1"]
+apps = []
+after = []
+hitl = false
+verify = "Teste(s) que comprovam esta fatia."
+
+# Tarefas técnicas atômicas
+[[task]]
+id = "T1"
+slice_id = 1
+title = "Implementação inicial da fatia 1"
+covers = ["S1"]
+parallel = false
+target_files = []
+
+# Log temporal de aprendizados e gotchas (injetado no scpe pack)
+[[log]]
+date = "{{today}}"
+author = "system"
+entry = "Feature criada em estado Draft."
