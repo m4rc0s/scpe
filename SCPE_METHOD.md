@@ -43,7 +43,7 @@ SCPE belongs to the **Spec-Driven Development** movement and borrows from its ne
 * **One Workspace per Product:** The agent's scope is restricted to the active product folder, which protects it from unrelated context.
 * **Clone the Product, Not the Service:** You clone the entire product. Documentation guides the agents; code is the subordinate asset that is validated, run, tested, and deployed.
 * **Product → Apps:** The product owns everything: `Product → Apps → {Backend, Client, …}`.
-* **Agreed Engineering Standards:** Generated code follows the standards the team agrees in `techinal_deal.md` — for example SOLID, Clean Architecture, Hexagonal (Ports and Adapters), and established design patterns.
+* **Agreed Engineering Standards:** Generated code follows the standards agreed in `architecture.md` and `app.toml` — for example SOLID, Clean Architecture, Hexagonal (Ports and Adapters), and established design patterns.
 * **Application Manifest (`app.toml`):** A strongly typed TOML descriptor (ADR-001) that specifies the responsibility, execution commands (`run`, `test`, `lint`), dependencies, and negative boundaries of each application in `apps/`.
 * **JIT Context Compilation (`scpe pack`):** Downstream agents receive focused, compiled context per vertical slice without loading the entire documentation corpus.
 
@@ -53,7 +53,7 @@ SCPE belongs to the **Spec-Driven Development** movement and borrows from its ne
 
 Eric Evans' central idea in Domain-Driven Design was not about mapping tables, but that **the heart of software is solving problems in the user's domain**. With implementation delegated to agents, a team can focus on exactly that.
 
-That is why, in SCPE, **"Developer" has a universal meaning**. Everyone who shapes the product — Product Managers, Designers, Engineering Managers, Staff Engineers, domain experts — is a Developer. Each contributes their own expertise, and together they guide agents in writing epic scopes (`index.md`) and plans (`plan.md`), anchored to the team's technical agreements.
+That is why, in SCPE, **"Developer" has a universal meaning**. Everyone who shapes the product — Product Managers, Designers, Engineering Managers, Staff Engineers, domain experts — is a Developer. Each contributes their own expertise, and together they guide agents in writing feature plans (`plan.md`), anchored to the team's technical agreements and system boundaries.
 
 **Humans decide, agents execute.** Developers define intent, review, and approve. Agents draft documents, break plans into tasks, and write code. No agent approves its own work or settles an open business question on its own.
 
@@ -75,19 +75,23 @@ Keep your portfolio organized in one place (e.g., `$HOME/product_design/`), with
 
 ```text
 myproduct/
-├── index.md                 # Master guide: structure, summary, and navigation
-├── product_vision.md        # Macro vision, business goals, profitability, and core problem
+├── agents.toml              # Agent roster, stages, write ownership, and boundaries (BMad-inspired)
 ├── roadmap.md               # Strategic direction and product milestones (synced via scpe roadmap --sync)
-├── glossary.md              # Ubiquitous language (domain terms)
-├── architecture.md          # C4 model, systemic choices, and integrations
-├── techinal_deal.md         # Technical agreements, AI guardrails, constraints, and approved stack
-├── team_playbook.md         # Rules of engagement, workflow, and team culture
-├── assets/                  # Reference documents, wireframes, and visual assets
-├── apps/                    # The software applications (each with app.toml)
-└── features/                # Development lifecycle, sliced into sequential feature folders
-    └── 001-pix-payment/     # Atomic capability folder
-        ├── plan.md          # Living specification: intent, rules (R#), examples (S#), slices
-        └── tasks.toml       # Machine execution: state, slices, task graph, and log
+├── glossary.md              # Ubiquitous language (domain terms, queried via scpe term <word>)
+├── architecture.md          # C4 model, tech agreements, constraints, and systemic boundaries
+├── product_vision.md        # (Optional) Macro vision, business goals, and core problem
+├── assets/                  # (Optional) Reference documents, wireframes, and visual assets
+├── apps/                    # Generated applications (consequence of spec, each with app.toml)
+│   └── api-core/
+│       ├── app.toml         # Application manifest and boundaries
+│       └── src/ ...
+└── features/                # Flat sequential capability folders (each folder is an epic)
+    ├── 001-user-auth/
+    │   ├── plan.md          # Living specification: intent, rules (R#), examples (S#), slices
+    │   └── tasks.toml       # Machine execution: state, slices, task graph, and log
+    └── 002-pix-payment/
+        ├── plan.md
+        └── tasks.toml
 ```
 
 ---

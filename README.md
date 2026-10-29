@@ -94,25 +94,33 @@ No external dependencies. Just Python standard library, Markdown, TOML, Git, and
 
 ## 🏛️ The Product Workspace
 
+SCPE eliminates unnecessary markdown bloat, adopting a **lean, flat, and direct workspace structure** inspired by BMad:
+
 ```text
 myproduct/                     # one workspace per product
-├── index.md                   # master guide and navigation
-├── product_vision.md          # vision, business goals, core problem
-├── roadmap.md                 # strategic roadmap (synced via scpe roadmap --sync)
-├── glossary.md                # ubiquitous language (DDD)
-├── architecture.md            # C4 model, integrations
-├── technical_deal.md          # agreements, constraints, approved stack
-├── team_playbook.md           # workflow and rules of engagement
-├── agents.toml                # agent roster, stages, ownership and boundaries
-├── apps/                      # generated code — consequence, not starting point
+├── agents.toml                # agent roster, stages, write ownership & boundaries (BMad-inspired)
+├── roadmap.md                 # single consolidated product roadmap (synced via scpe roadmap --sync)
+├── glossary.md                # ubiquitous language (queried JIT via scpe term <word>)
+├── architecture.md            # C4 model, system boundaries, approved stack & engineering guardrails
+├── product_vision.md          # (optional) macro business vision, problem statement & drivers
+│
+├── apps/                      # generated applications (consequence of spec, not starting point)
 │   └── api-core/
-│       ├── app.toml           # application manifest & boundaries (ADR-001)
-│       └── src/...
-└── features/                  # flat sequential lifecycle
-    └── 001-pix-payment/
-        ├── plan.md            # intent, business rules (R#), examples (S#), slices
-        └── tasks.toml         # state, slices, task graph, temporal log
+│       ├── app.toml           # typed application manifest, commands & negative boundaries
+│       └── src/...            # generated domain, infra, and tests
+│
+└── features/                  # flat sequential capability lifecycle (each folder is an epic)
+    ├── 001-user-auth/
+    │   ├── plan.md            # domain intent, rules (R#), examples (S#), vertical slices
+    │   └── tasks.toml         # machine state, task graph, and temporal audit log
+    └── 002-pix-payment/
+        ├── plan.md
+        └── tasks.toml
 ```
+
+- **Clean & Direct Root**: No redundant indices (`index.md`) or duplicate agreement files (`technical_deal.md`, `team_playbook.md`). Architectural agreements and tech stack live in `architecture.md` and `app.toml`; agent governance lives in `agents.toml`.
+- **Single Source of Truth Roadmap**: `roadmap.md` is centralized at the root and auto-synchronized across all feature lifecycles via `scpe roadmap --sync`.
+- **Flat Features (Zero Jira-bloat)**: No hollow `epics/` folders, `quick_status.md`, or per-feature roadmaps. Each sequential feature folder (`features/00X-<slug>/`) contains only **`plan.md`** (human/agent intent) and **`tasks.toml`** (machine execution).
 
 The full workspace and the standard format of each file are in **[SCPE_METHOD.md](SCPE_METHOD.md)** and **[ADR-001](adr.md)**.
 
@@ -124,12 +132,12 @@ SCPE workspaces structure collaboration across 7 native specialized agents defin
 
 | Agent | Specialty | Stage (Wave) | Owns (Writes) | Boundaries (Consults) |
 |---|---|---|---|---|
-| **`product-manager`** 🎯 | Product Engineering | **1. Upstream** | `product_vision.md`, `roadmap.md`, `glossary.md`, `features/*/plan.md` | `architecture.md`, `technical_deal.md`, `app.toml` |
-| **`ux-researcher`** 📊 | User Behavior & Analytics | **1. Upstream** | `research/`, `analytics_plan.md` | `product_vision.md`, `plan.md` |
-| **`senior-fullstack-product-designer`** 🎨 | Product Design & UI | **1. Upstream** & **3. Downstream** | `design_system.md`, `assets/`, `apps/*/src/components/ui/` | `product_vision.md`, `plan.md` |
-| **`software-architect`** 🏛️ | Architecture & Tech Lead | **2. Readiness Gate** | `architecture.md`, `technical_deal.md`, `app.toml`, `adr.md` | `features/*/plan.md` |
-| **`senior-backend-developer`** ⚙️ | Backend & Persistence | **3. Downstream (JIT)** | `apps/*/src/domain/`, `apps/*/src/infrastructure/`, `apps/*/tests/`, `tasks.toml` | `app.toml` boundaries, `plan.md` |
-| **`senior-frontend-developer`** 💻 | Frontend & UI State | **3. Downstream (JIT)** | `apps/*/src/pages/`, `apps/*/src/components/`, `apps/*/tests/ui/`, `tasks.toml` | `design_system.md`, `app.toml`, `plan.md` |
+| **`product-manager`** 🎯 | Product Engineering | **1. Upstream** | `product_vision.md`, `roadmap.md`, `glossary.md`, `features/*/plan.md` | `architecture.md`, `apps/*/app.toml` |
+| **`ux-researcher`** 📊 | User Behavior & Analytics | **1. Upstream** | `research/`, `analytics_plan.md` | `product_vision.md`, `features/*/plan.md` |
+| **`senior-fullstack-product-designer`** 🎨 | Product Design & UI | **1. Upstream** & **3. Downstream** | `design_system.md`, `assets/`, `apps/*/src/components/ui/` | `product_vision.md`, `features/*/plan.md` |
+| **`software-architect`** 🏛️ | Architecture & Tech Lead | **2. Readiness Gate** | `architecture.md`, `apps/*/app.toml`, `adr.md` | `features/*/plan.md` |
+| **`senior-backend-developer`** ⚙️ | Backend & Persistence | **3. Downstream (JIT)** | `apps/*/src/domain/`, `apps/*/src/infrastructure/`, `apps/*/tests/`, `features/*/tasks.toml` | `apps/*/app.toml` boundaries, `features/*/plan.md` |
+| **`senior-frontend-developer`** 💻 | Frontend & UI State | **3. Downstream (JIT)** | `apps/*/src/pages/`, `apps/*/src/components/`, `apps/*/tests/ui/`, `features/*/tasks.toml` | `design_system.md`, `apps/*/app.toml`, `features/*/plan.md` |
 | **`ux-specialist`** 🔍 | Runtime UI Audit | **4. Audit** | `audits/ux_audit.md` | `design_system.md`, running UI |
 
 ---
@@ -158,7 +166,7 @@ Draft → Ready → WIP → Done
 ## ❓ FAQ
 
 **Does SCPE replace Clean Architecture, DDD, SOLID?**  
-No — it presupposes them. SCPE decides *when* and *by whom* intent is specified; code in `apps/` follows whatever standards the product's `technical_deal.md` defines.
+No — it presupposes them. SCPE decides *when* and *by whom* intent is specified; code in `apps/` follows whatever standards the product's `architecture.md` and `app.toml` define.
 
 **Do I need a specific tool to adopt SCPE?**  
 No, but the built-in `scripts/scpe.py` CLI (zero external dependencies, Python 3.11+ standard library) provides commands for init, feature scaffolding, JIT context packing (`scpe pack`), and automated roadmap synchronization (`scpe roadmap --sync`).
