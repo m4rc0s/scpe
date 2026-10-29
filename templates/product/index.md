@@ -14,7 +14,7 @@ Master guide for people and agents. Start here, then follow the links.
 - [architecture.md](architecture.md) — C4 model, systemic choices, integrations
 - [technical_deal.md](technical_deal.md) — technical agreements, AI guardrails, approved stack
 - [team_playbook.md](team_playbook.md) — rules of engagement and workflow
-- [quick_status.md](quick_status.md) — product-wide status panel
+- [agents.toml](agents.toml) — specialized agent roster, roles and governance boundaries
 
 ## Apps
 

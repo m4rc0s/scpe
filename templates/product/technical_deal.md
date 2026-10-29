@@ -21,7 +21,7 @@ against this file.
 <!-- Compliance, security, performance, budget, supported platforms. -->
 
 ## Definition of Done
-- Tasks in `tasks.md` all checked.
+- Tasks in `tasks.toml` all checked.
 - Tests for every example pass.
 - Code reviewed by a Developer.
-- `quick_status.md` log updated with learnings.
+- `tasks.toml` log updated with learnings and roadmap synchronized.

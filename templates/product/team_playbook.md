@@ -9,7 +9,7 @@
 1. **Upstream** — scope the feature and epic; model `plan.md` (terms, rules, examples, slices).
 2. **Readiness Gate** — the Tech Lead validates the model and marks the epic `Ready`.
 3. **Downstream** — the agent writes `tasks.md`, then code and tests, slice by slice.
-4. **Audit** — everyone tracks progress, learnings and blockers in `quick_status.md`.
+4. **Audit** — everyone tracks progress, learnings and blockers in `tasks.toml`; sync product roadmap via `scpe roadmap --sync`.
 
 Waves run concurrently across features.
 
