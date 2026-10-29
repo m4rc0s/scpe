@@ -1,7 +1,7 @@
 ---
 id: 1
 type: initiative
-title: "SCPE 2.0: The Compiled & Lean Spec Engine"
+title: "SCPE 0.4.0 (Experimental): The Compiled & Lean Spec Engine"
 parent: none
 covers: []
 sources: ["SCPE_METHOD.md", "README.md", "adr.md"]
@@ -9,7 +9,7 @@ after: []
 risk: medium
 ---
 
-# Initiative: SCPE 2.0 — The Compiled & Lean Spec Engine
+# Initiative: SCPE 0.4.0 (Experimental) — The Compiled & Lean Spec Engine
 
 ## Description
 Evolve the SCPE (Spec-Compiled Product Engineering) framework by introducing a compiled JIT context engine, flat sequential feature topology (`features/00X-slug/`), TOML-based execution metadata (ADR-001), a single consolidated product roadmap, and Git-native branch/PR lifecycle workflows. This eliminates the "Markdown Bloat" where agents were forced to read 8+ files per task, reducing token overhead by ~80% and delivering clean, human-readable specifications at every altitude.
@@ -34,7 +34,7 @@ Developers and AI agents build software with zero cognitive and token bloat: eac
 1. `templates/` in the SCPE skill contains canonical `app.toml` and `tasks.toml` scaffolds.
 2. `scpe.py` implements `pack`, `term`, `roadmap --sync`, sequential numbering, and the `--branch` flag.
 3. `scpe pack` successfully generates a compiled context payload under 1,000 tokens on a real or sample feature.
-4. `SCPE_METHOD.md` and `README.md` are updated to reflect SCPE 2.0 architecture and ADR-001.
+4. `SCPE_METHOD.md` and `README.md` are updated to reflect SCPE 0.4.0 architecture and ADR-001.
 5. `SKILL.md` and agent guidelines (`senior-backend-developer.md`, `senior-frontend-developer.md`) instruct agents to use `scpe pack` instead of multi-file markdown reading.
 6. A Pull Request is opened on GitHub against `main`.
 

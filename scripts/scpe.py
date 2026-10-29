@@ -428,7 +428,8 @@ def cmd_init(args) -> int:
     apps_list = "\n".join(f"- [{n}](apps/{n}/app.md) — {k}" for n, k in apps) or "_No apps yet._"
     values = {"product_name": args.name, "date": today(), "apps_list": apps_list}
 
-    for name in ROOT_FILES + ["CLAUDE.md", "AGENTS.md"]:
+    optional_root = ["CLAUDE.md", "AGENTS.md", "agents.toml"]
+    for name in ROOT_FILES + [f for f in optional_root if (TEMPLATES_DIR / "product" / f).is_file()]:
         write_new(dest / name, render(TEMPLATES_DIR / "product" / name, values))
     for d in ROOT_DIRS:
         (dest / d).mkdir(parents=True, exist_ok=True)
@@ -437,10 +438,19 @@ def cmd_init(args) -> int:
     if not apps:
         (dest / "apps" / ".gitkeep").touch()
     for name, kind in apps:
-        write_new(
-            dest / "apps" / name / "app.md",
-            render(TEMPLATES_DIR / "app" / "app.md", {**values, "app_name": name, "app_type": kind}),
-        )
+        app_dest_dir = dest / "apps" / name
+        app_dest_dir.mkdir(parents=True, exist_ok=True)
+        app_toml_tmpl = TEMPLATES_DIR / "app" / "app.toml"
+        if app_toml_tmpl.is_file():
+            write_new(
+                app_dest_dir / "app.toml",
+                render(app_toml_tmpl, {**values, "app_name": name, "app_type": kind}),
+            )
+        else:
+            write_new(
+                app_dest_dir / "app.md",
+                render(TEMPLATES_DIR / "app" / "app.md", {**values, "app_name": name, "app_type": kind}),
+            )
 
     git_msg = "git: skipped (--no-git)"
     if not args.no_git:
