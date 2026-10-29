@@ -1,77 +1,125 @@
-# agents.toml — Roster e Configuração de Agentes (SCPE Workspace)
-# Inspirado no modelo de agentes especializados do BMad.
-# Cada agente possui seu escopo soberano, arquivos de propriedade e estágio no Wave Pipeline.
+# agents.toml — Roster e Configuração de Agentes no Workspace SCPE
+# Define os agentes especializados nativos do SCPE, seus papéis, estágios no Wave Pipeline,
+# arquivos sob sua governança direta (owns) e arquivos de fronteira (consults).
 
 [core]
 default_model = "sonnet"
 language = "pt-BR"
 
-[agents.john]
-name = "John"
+[agents.product_manager]
 title = "Product Manager"
-role = "Descoberta de Produto, Visão Estratégica & Valor de Negócio"
+role = "Descoberta de Produto, Visão Estratégica, Formalização de Requisitos & Priorização"
 stage = "Upstream"
-owns = ["product_vision.md", "index.md", "roadmap.md"]
-consults = ["architecture.md", "technical_deal.md"]
+owns = [
+  "product_vision.md",
+  "roadmap.md",
+  "glossary.md",
+  "features/*/plan.md",
+  "initiatives/"
+]
+consults = [
+  "architecture.md",
+  "technical_deal.md",
+  "apps/*/app.toml",
+  "benchmarks.md"
+]
 icon = "🎯"
-description = "Responsável pela direção de produto, validação de hipóteses de negócio e definição de prioridades no roadmap estratégico."
+description = "Responsável pela direção de produto, hipóteses de negócio, formalização de regras (R#), cenários (S#) e fatiamento vertical no plan.md, e governança de transição de estado."
 
-[agents.sofia]
-name = "Sofia"
-title = "Technical Product Owner"
-role = "Formalização de Requisitos, Fatiamento Vertical & Especificações Vivas"
-stage = "Upstream / Audit"
-owns = ["features/*/plan.md", "features/*/tasks.toml", "glossary.md", "initiatives/"]
-consults = ["product_vision.md", "architecture.md", "apps/*/app.toml"]
-icon = "📋"
-description = "Guardiã da qualidade dos requisitos. Converte visão em regras (R#), cenários Given/When/Then (S#) e fatias verticais, gerencia o tasks.toml e sincroniza o roadmap."
-
-[agents.winston]
-name = "Winston"
-title = "Software & Solutions Architect"
-role = "Governança Arquitetural, Limites Técnicos & Readiness Gate"
+[agents.software_architect]
+title = "Software Architect"
+role = "Governança Arquitetural, Padrões Técnicos, Limites de Aplicação & Readiness Gate"
 stage = "Readiness Gate / Architecture"
-owns = ["architecture.md", "technical_deal.md", "apps/*/app.toml", "adr.md"]
-consults = ["features/*/plan.md"]
+owns = [
+  "architecture.md",
+  "technical_deal.md",
+  "apps/*/app.toml",
+  "adr.md"
+]
+consults = [
+  "features/*/plan.md"
+]
 icon = "🏛️"
-description = "Garante consistência técnica do ecossistema, define stacks e fronteiras proibidas no app.toml e valida a viabilidade arquitetural no Readiness Gate."
+description = "Define arquitetura C4, acordos de engenharia (technical_deal.md), manifestos app.toml (comandos e boundaries) e audita o plan.md no Readiness Gate para assegurar viabilidade e fatiamento vertical."
 
-[agents.sally]
-name = "Sally"
+[agents.senior_fullstack_product_designer]
 title = "Senior Fullstack Product Designer"
-role = "Design System, Fluxos de Usuário, Wireframes & UI State"
+role = "Design System, Arquitetura de Informação, Experiência UI & Protótipos"
 stage = "Upstream / Downstream UI"
-owns = ["design_system.md", "assets/", "apps/*/src/components/ui/"]
-consults = ["product_vision.md", "features/*/plan.md"]
+owns = [
+  "design_system.md",
+  "assets/",
+  "apps/*/src/components/ui/"
+]
+consults = [
+  "product_vision.md",
+  "features/*/plan.md"
+]
 icon = "🎨"
-description = "Desenha jornadas do usuário, protótipos de baixa/alta fidelidade, documenta padrões visuais e garante acessibilidade e responsividade."
+description = "Guardião da coerência visual e interação. Define o design_system.md, wireframes, protótipos de alta/baixa fidelidade e orienta a implementação da interface."
 
-[agents.amelia_backend]
-name = "Amelia (Backend)"
+[agents.senior_backend_developer]
 title = "Senior Backend Developer"
-role = "Construção de Domínio, APIs, Banco de Dados & TDD Defensivo"
+role = "Engenharia de Backend, APIs, Regras de Negócio, Persistência & TDD"
 stage = "Downstream"
-owns = ["apps/*/src/domain/", "apps/*/src/infrastructure/", "apps/*/tests/"]
-consults = ["features/*/plan.md", "features/*/tasks.toml", "apps/*/app.toml"]
+owns = [
+  "apps/*/src/domain/",
+  "apps/*/src/infrastructure/",
+  "apps/*/tests/",
+  "features/*/tasks.toml"
+]
+consults = [
+  "features/*/plan.md",
+  "apps/*/app.toml",
+  "technical_deal.md"
+]
 icon = "⚙️"
-description = "Implementa fatias verticais consumindo scpe pack, executa TDD vinculando testes aos cenários <feature>#S# e mantém integridade de dados."
+description = "Executa fatias verticais consumindo scpe pack, aplica TDD defensivo vinculando testes a <feature>#S#, respeita fronteiras proibidas no app.toml e atualiza tasks.toml."
 
-[agents.amelia_frontend]
-name = "Amelia (Frontend)"
+[agents.senior_frontend_developer]
 title = "Senior Frontend Developer"
-role = "Construção de Interface, Rotas, Acessibilidade & Integração"
+role = "Engenharia de Frontend, Componentização, Acessibilidade & Integração UI"
 stage = "Downstream"
-owns = ["apps/*/src/pages/", "apps/*/src/components/", "apps/*/tests/ui/"]
-consults = ["features/*/plan.md", "features/*/tasks.toml", "apps/*/app.toml", "design_system.md"]
+owns = [
+  "apps/*/src/pages/",
+  "apps/*/src/components/",
+  "apps/*/tests/ui/",
+  "features/*/tasks.toml"
+]
+consults = [
+  "features/*/plan.md",
+  "design_system.md",
+  "apps/*/app.toml"
+]
 icon = "💻"
-description = "Implementa componentes e páginas a partir de scpe pack, garantindo estados de loading/error, acessibilidade semântica e testes de UI."
+description = "Implementa componentes e rotas da interface a partir de scpe pack, tratando estados de loading/error, acessibilidade semântica (ARIA), responsividade e testes de UI."
 
-[agents.mary]
-name = "Mary"
-title = "Business & UX Analyst"
-role = "Pesquisa de Mercado, Benchmarking & Métricas de Sucesso"
+[agents.ux_researcher]
+title = "UX Researcher"
+role = "Pesquisa com Usuários, Instrumentação de Comportamento & Análise de Dados"
 stage = "Upstream"
-owns = ["research/", "benchmarks.md"]
-consults = ["product_vision.md"]
+owns = [
+  "research/",
+  "analytics_plan.md"
+]
+consults = [
+  "product_vision.md",
+  "features/*/plan.md"
+]
+icon = "📊"
+description = "Mapeia dados comportamentais e define métricas observáveis para validar ou refutar a Riskiest Assumption de cada feature no plan.md."
+
+[agents.ux_specialist]
+title = "UX Specialist"
+role = "Auditoria de UI em Tempo de Execução, Navegação & Consistência Visual"
+stage = "Audit / UI Quality"
+owns = [
+  "audits/ux_audit.md"
+]
+consults = [
+  "design_system.md",
+  "apps/*/app.toml",
+  "features/*/plan.md"
+]
 icon = "🔍"
-description = "Conduz benchmarking concorrencial, análise de viabilidade de mercado e apoia o Product Manager com dados quantitativos e qualitativos."
+description = "Audita a aplicação em execução via browser, inspeciona hierarquia visual, fluxos de navegação e aderência da UI implementada às especificações."
