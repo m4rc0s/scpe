@@ -6,7 +6,7 @@
 [![Method](https://img.shields.io/badge/method-SCPE-6C5CE7)](SCPE_METHOD.md)
 [![Source of truth](https://img.shields.io/badge/source%20of%20truth-Markdown%20%2B%20Natural%20Language-000000)](#-what-is-scpe)
 
-**[What is SCPE](#-what-is-scpe) • [Why it exists](#-why-scpe-exists) • [Pillars](#-the-pillars) • [Get Started](#-get-started) • [Wave Pipeline](#-the-wave-pipeline) • [Workspace](#%EF%B8%8F-the-product-workspace) • [Epic States](#%EF%B8%8F-epic-states) • [FAQ](#-faq)**
+**[What is SCPE](#-what-is-scpe) • [Why it exists](#-why-scpe-exists) • [Pillars](#-the-pillars) • [Get Started](#-get-started) • [Wave Pipeline](#-the-wave-pipeline) • [Workspace](#%EF%B8%8F-the-product-workspace) • [Agents](#-specialized-agent-roster) • [Feature States](#%EF%B8%8F-feature-states) • [FAQ](#-faq)**
 
 ---
 
@@ -102,6 +102,8 @@ myproduct/                     # one workspace per product
 ├── glossary.md                # ubiquitous language (DDD)
 ├── architecture.md            # C4 model, integrations
 ├── technical_deal.md          # agreements, constraints, approved stack
+├── team_playbook.md           # workflow and rules of engagement
+├── agents.toml                # agent roster, stages, ownership and boundaries
 ├── apps/                      # generated code — consequence, not starting point
 │   └── api-core/
 │       ├── app.toml           # application manifest & boundaries (ADR-001)
@@ -116,9 +118,25 @@ The full workspace and the standard format of each file are in **[SCPE_METHOD.md
 
 ---
 
-## ⚙️ Epic States
+## 🤖 Specialized Agent Roster
 
-Each epic has one explicit state — no implicit states, no ambiguity for the agent:
+SCPE workspaces structure collaboration across 7 native specialized agents defined in `agents.toml`:
+
+| Agent | Specialty | Stage (Wave) | Owns (Writes) | Boundaries (Consults) |
+|---|---|---|---|---|
+| **`product-manager`** 🎯 | Product Engineering | **1. Upstream** | `product_vision.md`, `roadmap.md`, `glossary.md`, `features/*/plan.md` | `architecture.md`, `technical_deal.md`, `app.toml` |
+| **`ux-researcher`** 📊 | User Behavior & Analytics | **1. Upstream** | `research/`, `analytics_plan.md` | `product_vision.md`, `plan.md` |
+| **`senior-fullstack-product-designer`** 🎨 | Product Design & UI | **1. Upstream** & **3. Downstream** | `design_system.md`, `assets/`, `apps/*/src/components/ui/` | `product_vision.md`, `plan.md` |
+| **`software-architect`** 🏛️ | Architecture & Tech Lead | **2. Readiness Gate** | `architecture.md`, `technical_deal.md`, `app.toml`, `adr.md` | `features/*/plan.md` |
+| **`senior-backend-developer`** ⚙️ | Backend & Persistence | **3. Downstream (JIT)** | `apps/*/src/domain/`, `apps/*/src/infrastructure/`, `apps/*/tests/`, `tasks.toml` | `app.toml` boundaries, `plan.md` |
+| **`senior-frontend-developer`** 💻 | Frontend & UI State | **3. Downstream (JIT)** | `apps/*/src/pages/`, `apps/*/src/components/`, `apps/*/tests/ui/`, `tasks.toml` | `design_system.md`, `app.toml`, `plan.md` |
+| **`ux-specialist`** 🔍 | Runtime UI Audit | **4. Audit** | `audits/ux_audit.md` | `design_system.md`, running UI |
+
+---
+
+## ⚙️ Feature States
+
+Declared inside each feature's `tasks.toml` under `[state]`:
 
 ```text
 Draft → Ready → WIP → Done
@@ -128,33 +146,28 @@ Draft → Ready → WIP → Done
            └───→ (returns to Ready after resolution)
 ```
 
-- **`Draft`** — being modeled, not yet validated.
-- **`Ready`** — approved at the Readiness Gate.
-- **`WIP`** — being built by an agent.
-- **`Blocked`** — stopped by an external dependency or a defect.
-- **`Done`** — code matches the current plan.
-- **`Stale`** — plan changed after delivery; goes back through the Readiness Gate before any new work.
-
-This is what keeps "documentation as single source of truth" an **actively maintained** property. Details in **[SCPE_METHOD.md](SCPE_METHOD.md#44-epic-state-machine)**.
+- **`Draft`** — being modeled in Upstream; not yet validated at the Readiness Gate.
+- **`Ready`** — validated by the Tech Lead / Software Architect; ready for agent compilation.
+- **`WIP`** — being actively implemented by downstream developer agents.
+- **`Blocked`** — stopped by an external dependency or defect.
+- **`Done`** — code matches the current `plan.md` and passes `<feature>#S#` tests.
+- **`Stale`** — `plan.md` was edited post-delivery; requires review before re-execution.
 
 ---
 
 ## ❓ FAQ
 
-**Does SCPE replace Clean Architecture, DDD, SOLID?**
-No — it presupposes them. SCPE decides *when* and *by whom* intent is specified; code in `apps/` follows whatever standards the product's `techinal_deal.md` defines.
+**Does SCPE replace Clean Architecture, DDD, SOLID?**  
+No — it presupposes them. SCPE decides *when* and *by whom* intent is specified; code in `apps/` follows whatever standards the product's `technical_deal.md` defines.
 
-**Do I need a specific tool to adopt SCPE?**
-No. Any AI agent that can read Markdown and write code works for Downstream.
+**Do I need a specific tool to adopt SCPE?**  
+No, but the built-in `scripts/scpe.py` CLI (zero external dependencies, Python 3.11+ standard library) provides commands for init, feature scaffolding, JIT context packing (`scpe pack`), and automated roadmap synchronization (`scpe roadmap --sync`).
 
-**What happens if I change `plan.md` after the epic is delivered?**
-The epic becomes `Stale` and goes back to the Readiness Gate — it never turns into silent, hidden technical debt.
+**What happens if I change `plan.md` after a feature is delivered?**  
+The feature becomes `Stale` and returns to the Readiness Gate — it never turns into silent, hidden technical debt.
 
-**Does SCPE work with multiple code repositories per product?**
-Yes. The `app.md` stays in the product workspace, and a `repo_pointer.md` next to it points to the repository where the code lives.
-
-**Is this only for teams already using AI heavily?**
-It is designed for that, but the core — living documentation as contract, shared domain language, clear epic states — works even before an agent runs Downstream.
+**Does SCPE work with multiple code repositories per product?**  
+Yes. The `app.toml` stays in the product workspace, and a `repo_pointer.md` next to it points to the external repository where the code lives.
 
 ---
 
@@ -162,10 +175,10 @@ It is designed for that, but the core — living documentation as contract, shar
 
 | File / Folder | Role |
 |---|---|
-| [`SCPE_METHOD.md`](SCPE_METHOD.md) | The complete method, including the standard format of every file |
+| [`SCPE_METHOD.md`](SCPE_METHOD.md) | The complete method specification, file standards, and protocols |
 | [`adr.md`](adr.md) | Architecture Decision Records (e.g. ADR-001: TOML execution metadata) |
 | [`scripts/scpe.py`](scripts/scpe.py) | Zero-dependency CLI engine (init, feature, pack, roadmap, term, validate) |
-| [`templates/`](templates/) | Canonical scaffolds for `app.toml`, `plan.md`, `tasks.toml` |
+| [`templates/`](templates/) | Canonical scaffolds for `app.toml`, `plan.md`, `tasks.toml`, `agents.toml` |
 
 ---
 
