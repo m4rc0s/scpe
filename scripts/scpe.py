@@ -40,8 +40,7 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = SKILL_DIR / "templates"
 
 ROOT_FILES = [
-    "index.md", "product_vision.md", "roadmap.md", "glossary.md",
-    "architecture.md", "technical_deal.md", "team_playbook.md",
+    "roadmap.md", "glossary.md", "architecture.md", "agents.toml",
 ]
 ROOT_DIRS = ["apps", "features", "assets"]
 # Compact layout ("tiny SCPE"): no apps/ or assets/ folders, one app.md at the
@@ -457,7 +456,7 @@ def cmd_init(args) -> int:
     apps_list = "\n".join(f"- [{n}](apps/{n}/app.md) — {k}" for n, k in apps) or "_No apps yet._"
     values = {"product_name": args.name, "date": today(), "apps_list": apps_list}
 
-    optional_root = ["CLAUDE.md", "AGENTS.md", "agents.toml"]
+    optional_root = ["product_vision.md", "CLAUDE.md", "AGENTS.md"]
     for name in ROOT_FILES + [f for f in optional_root if (TEMPLATES_DIR / "product" / f).is_file()]:
         write_new(dest / name, render(TEMPLATES_DIR / "product" / name, values))
     for d in ROOT_DIRS:
@@ -491,7 +490,7 @@ def cmd_init(args) -> int:
 
     print(f"✅ SCPE workspace created at {dest}")
     print(f"   {git_msg}")
-    print("   Next: Upstream — fill product_vision.md, glossary.md and technical_deal.md,")
+    print("   Next: Upstream — fill product_vision.md, glossary.md and architecture.md,")
     print("   then open the most critical feature with `scpe.py feature <slug> \"<Title>\"`.")
     return 0
 
@@ -811,7 +810,7 @@ def cmd_gate_check(args) -> int:
                                   "the epic itself need not be"))
     else:
         results.append(("MANUAL", "slices are vertical, or the reason they are not is written under ## Slices"))
-    results.append(("MANUAL", "model fits architecture.md and technical_deal.md"))
+    results.append(("MANUAL", "model fits architecture.md and app.toml"))
     results.append(("MANUAL", "every Then is observable by a user or another system"))
 
     icons = {"PASS": "✅", "FAIL": "❌", "WARN": "⚠️ ", "MANUAL": "👤"}

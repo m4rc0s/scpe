@@ -9,8 +9,12 @@
 ## Bounded Contexts
 <!-- Context name — responsibility — owning app(s). -->
 
+## Approved Stack & Engineering Standards
+<!-- Languages, frameworks, datastores, patterns (SOLID, Clean Architecture, Hexagonal). -->
+
 ## Integrations
 <!-- External system — protocol — direction — owner. -->
 
-## Decisions
+## Decisions & AI Guardrails
+<!-- Systemic constraints, AI guardrails (humans decide, agents execute), and ADR references. -->
 <!-- - **YYYY-MM-DD — decision:** why, and the alternative that was rejected. -->
